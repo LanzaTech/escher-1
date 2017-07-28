@@ -16,8 +16,10 @@ node_modules/
 *.tar.gz
 *.whl
 .idea/
+
 # built files
 dist/
+js/src/inline.js
 js/src/coverage/
 py/escher/package.json
 py/escher/static/escher/

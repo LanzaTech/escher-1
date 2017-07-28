@@ -2,8 +2,8 @@ var package = require('./package.json')
 
 module.exports = function (grunt) {
   // common tasks
-  var tasks = [ 'cssmin', 'concat', 'browserify', 'extract_sourcemap', 'uglify',
-                'copy', ]
+  var tasks = ['cssmin', 'concat', 'browserify', 'extract_sourcemap', 'uglify',
+    'copy',]
 
   // Project configuration
   grunt.initConfig({
@@ -39,6 +39,9 @@ module.exports = function (grunt) {
     // js
     browserify: {
       options: {
+        transform: [
+          ['babelify', { presets: ['es2015'] }]
+        ],
         browserifyOptions: {
           standalone: 'escher',
           debug: true,
@@ -46,7 +49,7 @@ module.exports = function (grunt) {
       },
       dist: {
         files: {
-          'js/build/escher.js': [ 'js/src/main.js' ],
+          'js/build/escher.js': ['js/src/main.js'],
         },
       },
     },
@@ -82,7 +85,7 @@ module.exports = function (grunt) {
         flatten: true,
       },
       escher: {
-        src: [ 'js/dist/*', 'css/dist/*' ],
+        src: ['js/dist/*', 'css/dist/*'],
         dest: 'py/escher/static/escher/',
         expand: true,
         flatten: true,
@@ -225,9 +228,9 @@ module.exports = function (grunt) {
 
   // register tasks
   grunt.registerTask('default', tasks)
-  grunt.registerTask('test', [ 'mochaTest' ])
-  grunt.registerTask('coverage', [ 'env:coverage', 'instrument', 'mochaTest',
-                                   'storeCoverage', 'makeReport', 'coveralls', ])
-  grunt.registerTask('publish', [ 'gitpush', ...tasks, 'shell:npm',
-                                  'shell:pypi', ])
+  grunt.registerTask('test', ['mochaTest'])
+  grunt.registerTask('coverage', ['env:coverage', 'instrument', 'mochaTest',
+    'storeCoverage', 'makeReport', 'coveralls',])
+  grunt.registerTask('publish', ['gitpush', ...tasks, 'shell:npm',
+    'shell:pypi',])
 }

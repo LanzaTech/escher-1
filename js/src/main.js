@@ -44,6 +44,7 @@ module.exports = {
   ui: require('./ui'),
   static: require('./static'),
   ZoomContainer: require('./ZoomContainer'),
+  PathwayGraph: require('./PathwayGraph'),
   libs: {
     '_': require('underscore'),
     'underscore': require('underscore'),

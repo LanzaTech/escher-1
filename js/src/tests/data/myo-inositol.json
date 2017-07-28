@@ -1,0 +1,348 @@
+{
+  "reactions": [
+    {
+      "name": "rhea:26073",
+      "reaction_string": "H(+) + UDP + D-glucuronate <=> H2O + UDP-alpha-D-glucuronate",
+      "id": "MNXR56004"
+    },
+    {
+      "name": "rhea:23696",
+      "reaction_string": "myo-inositol + O2 <=> H(+) + H2O + D-glucuronate",
+      "id": "MNXR3107"
+    },
+    {
+      "name": "rhea:27670",
+      "reaction_string": "myo-inositol + phosphate <=> H2O + 1D-myo-inositol 1-phosphate",
+      "id": "MNXR3542"
+    },
+    {
+      "name": "kegg:R03330",
+      "reaction_string": "H2O + 1D-myo-inositol 1,3-biphosphate <=> 1D-myo-inositol 1-phosphate + phosphate",
+      "id": "MNXR69444"
+    },
+    {
+      "name": "rhea:43392",
+      "reaction_string": "H2O + 1D-myo-inositol 1,3,4-trisphosphate <=> 1D-myo-inositol 1,3-biphosphate + phosphate",
+      "id": "MNXR69443"
+    },
+    {
+      "name": "rhea:20940",
+      "reaction_string": "H(+) + ADP + 1D-myo-inositol 1,3,4,6-tetrakisphosphate <=> ATP + 1D-myo-inositol 1,3,4-trisphosphate",
+      "id": "MNXR3531"
+    }
+  ],
+  "model": {
+    "id": "test",
+    "version": 1,
+    "metabolites": [
+      {
+        "name": "D-glucuronate",
+        "formula": "C6H9O7",
+        "compartment": "",
+        "charge": -1,
+        "annotation": {
+          "source": "chebi:58720",
+          "InChI": "InChI=1S/C6H10O7/c7-1-2(8)4(5(10)11)13-6(12)3(1)9/h1-4,6-9,12H,(H,10,11)/p-1/t1-,2-,3+,4-,6?/m0/s1",
+          "mass": "193.1315"
+        },
+        "id": "MNXM241"
+      },
+      {
+        "name": "H2O",
+        "formula": "H2O",
+        "compartment": "",
+        "charge": 0,
+        "annotation": {
+          "source": "chebi:15377",
+          "InChI": "InChI=1S/H2O/h1H2",
+          "mass": "18.0153"
+        },
+        "id": "MNXM2"
+      },
+      {
+        "name": "H(+)",
+        "formula": "H",
+        "compartment": "",
+        "charge": 1,
+        "annotation": {
+          "source": "chebi:15378",
+          "InChI": "InChI=1S/p+1",
+          "mass": "1.0079"
+        },
+        "id": "MNXM1"
+      },
+      {
+        "name": "myo-inositol",
+        "formula": "C6H12O6",
+        "compartment": "",
+        "charge": 0,
+        "annotation": {
+          "source": "chebi:17268",
+          "InChI": "InChI=1S/C6H12O6/c7-1-2(8)4(10)6(12)5(11)3(1)9/h1-12H/t1-,2-,3-,4+,5-,6-",
+          "mass": "180.1559"
+        },
+        "id": "MNXM127"
+      },
+      {
+        "name": "O2",
+        "formula": "O2",
+        "compartment": "",
+        "charge": 0,
+        "annotation": {
+          "source": "chebi:15379",
+          "InChI": "InChI=1S/O2/c1-2",
+          "mass": "31.9988"
+        },
+        "id": "MNXM4"
+      },
+      {
+        "name": "1D-myo-inositol 1,3-biphosphate",
+        "formula": "C6H10O12P2",
+        "compartment": "",
+        "charge": -4,
+        "annotation": {
+          "source": "chebi:83242",
+          "InChI": "InChI=1S/C6H14O12P2/c7-1-2(8)5(17-19(11,12)13)4(10)6(3(1)9)18-20(14,15)16/h1-10H,(H2,11,12,13)(H2,14,15,16)/p-4/t1-,2-,3+,4+,5+,6-",
+          "mass": "336.0839"
+        },
+        "id": "MNXM5702"
+      },
+      {
+        "name": "1D-myo-inositol 1,3,4-trisphosphate",
+        "formula": "C6H9O15P3",
+        "compartment": "",
+        "charge": -6,
+        "annotation": {
+          "source": "chebi:58414",
+          "InChI": "InChI=1S/C6H15O15P3/c7-1-2(8)5(20-23(13,14)15)6(21-24(16,17)18)3(9)4(1)19-22(10,11)12/h1-9H,(H2,10,11,12)(H2,13,14,15)(H2,16,17,18)/p-6/t1-,2-,3+,4+,5+,6+/m1/s1",
+          "mass": "414.0479"
+        },
+        "id": "MNXM532"
+      },
+      {
+        "name": "phosphate",
+        "formula": "HO4P",
+        "compartment": "",
+        "charge": -2,
+        "annotation": {
+          "source": "chebi:43474",
+          "InChI": "InChI=1S/H3O4P/c1-5(2,3)4/h(H3,1,2,3,4)/p-2",
+          "mass": "95.9793"
+        },
+        "id": "MNXM9"
+      },
+      {
+        "name": "ADP",
+        "formula": "C10H12N5O10P2",
+        "compartment": "",
+        "charge": -3,
+        "annotation": {
+          "source": "chebi:456216",
+          "InChI": "InChI=1S/C10H15N5O10P2/c11-8-5-9(13-2-12-8)15(3-14-5)10-7(17)6(16)4(24-10)1-23-27(21,22)25-26(18,19)20/h2-4,6-7,10,16-17H,1H2,(H,21,22)(H2,11,12,13)(H2,18,19,20)/p-3/t4-,6-,7-,10-/m1/s1",
+          "mass": "424.1773"
+        },
+        "id": "MNXM7"
+      },
+      {
+        "name": "ATP",
+        "formula": "C10H12N5O13P3",
+        "compartment": "",
+        "charge": -4,
+        "annotation": {
+          "source": "chebi:30616",
+          "InChI": "InChI=1S/C10H16N5O13P3/c11-8-5-9(13-2-12-8)15(3-14-5)10-7(17)6(16)4(26-10)1-25-30(21,22)28-31(23,24)27-29(18,19)20/h2-4,6-7,10,16-17H,1H2,(H,21,22)(H,23,24)(H2,11,12,13)(H2,18,19,20)/p-4/t4-,6-,7-,10-/m1/s1",
+          "mass": "503.1493"
+        },
+        "id": "MNXM3"
+      },
+      {
+        "name": "1D-myo-inositol 1,3,4,6-tetrakisphosphate",
+        "formula": "C6H8O18P4",
+        "compartment": "",
+        "charge": -8,
+        "annotation": {
+          "source": "chebi:57660",
+          "InChI": "InChI=1S/C6H16O18P4/c7-1-3(21-25(9,10)11)5(23-27(15,16)17)2(8)6(24-28(18,19)20)4(1)22-26(12,13)14/h1-8H,(H2,9,10,11)(H2,12,13,14)(H2,15,16,17)(H2,18,19,20)/p-8/t1-,2+,3-,4+,5-,6+",
+          "mass": "492.012"
+        },
+        "id": "MNXM929"
+      },
+      {
+        "name": "1D-myo-inositol 1-phosphate",
+        "formula": "C6H11O9P",
+        "compartment": "",
+        "charge": -2,
+        "annotation": {
+          "source": "chebi:58433",
+          "InChI": "InChI=1S/C6H13O9P/c7-1-2(8)4(10)6(5(11)3(1)9)15-16(12,13)14/h1-11H,(H2,12,13,14)/p-2/t1-,2-,3+,4-,5-,6-/m1/s1",
+          "mass": "258.1199"
+        },
+        "id": "MNXM646"
+      },
+      {
+        "name": "UDP",
+        "formula": "C9H11N2O12P2",
+        "compartment": "",
+        "charge": -3,
+        "annotation": {
+          "source": "chebi:58223",
+          "InChI": "InChI=1S/C9H14N2O12P2/c12-5-1-2-11(9(15)10-5)8-7(14)6(13)4(22-8)3-21-25(19,20)23-24(16,17)18/h1-2,4,6-8,13-14H,3H2,(H,19,20)(H,10,12,15)(H2,16,17,18)/p-3/t4-,6-,7-,8-/m1/s1",
+          "mass": "401.1374"
+        },
+        "id": "MNXM17"
+      },
+      {
+        "name": "UDP-alpha-D-glucuronate",
+        "formula": "C15H19N2O18P2",
+        "compartment": "",
+        "charge": -3,
+        "annotation": {
+          "source": "chebi:58052",
+          "InChI": "InChI=1S/C15H22N2O18P2/c18-5-1-2-17(15(26)16-5)12-9(22)6(19)4(32-12)3-31-36(27,28)35-37(29,30)34-14-10(23)7(20)8(21)11(33-14)13(24)25/h1-2,4,6-12,14,19-23H,3H2,(H,24,25)(H,27,28)(H,29,30)(H,16,18,26)/p-3/t4-,6-,7+,8+,9-,10-,11+,12-,14-/m1/s1",
+          "mass": "577.2615"
+        },
+        "id": "MNXM87"
+      }
+    ],
+    "genes": [],
+    "reactions": [
+      {
+        "name": "rhea:23696",
+        "id": "MNXR3107",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `myo-inositol` + 1 `O2` = 1 `H(+)` + 1 `H2O` + 1 `D-glucuronate`",
+          "EC": "1.13.99.1"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM4": -1,
+          "MNXM1": 1,
+          "MNXM2": 1,
+          "MNXM241": 1,
+          "MNXM127": -1
+        }
+      },
+      {
+        "name": "rhea:43392",
+        "id": "MNXR69443",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `H2O` + 1 `1D-myo-inositol 1,3,4-trisphosphate` = 1 `1D-myo-inositol 1,3-biphosphate` + 1 `phosphate`",
+          "EC": "3.1.3.66"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM532": -1,
+          "MNXM5702": 1,
+          "MNXM2": -1,
+          "MNXM9": 1
+        }
+      },
+      {
+        "name": "rhea:20940",
+        "id": "MNXR3531",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `H(+)` + 1 `ADP` + 1 `1D-myo-inositol 1,3,4,6-tetrakisphosphate` = 1 `ATP` + 1 `1D-myo-inositol 1,3,4-trisphosphate`",
+          "EC": "2.7.1.127;2.7.1.159"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM532": 1,
+          "MNXM7": -1,
+          "MNXM1": -1,
+          "MNXM3": 1,
+          "MNXM929": -1
+        }
+      },
+      {
+        "name": "kegg:R03330",
+        "id": "MNXR69444",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `H2O` + 1 `1D-myo-inositol 1,3-biphosphate` = 1 `1D-myo-inositol 1-phosphate` + 1 `phosphate`",
+          "EC": "3.1.3.64"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM9": 1,
+          "MNXM5702": -1,
+          "MNXM2": -1,
+          "MNXM646": 1
+        }
+      },
+      {
+        "name": "rhea:27670",
+        "id": "MNXR3542",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `myo-inositol` + 1 `phosphate` = 1 `H2O` + 1 `1D-myo-inositol 1-phosphate`",
+          "EC": "3.1.3.25"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM9": -1,
+          "MNXM2": 1,
+          "MNXM646": 1,
+          "MNXM127": -1
+        }
+      },
+      {
+        "name": "rhea:26073",
+        "id": "MNXR56004",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `H(+)` + 1 `UDP` + 1 `D-glucuronate` = 1 `H2O` + 1 `UDP-alpha-D-glucuronate`",
+          "EC": "2.4.1.17;3.2.1"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM2": 1,
+          "MNXM87": 1,
+          "MNXM241": -1,
+          "MNXM1": -1,
+          "MNXM17": -1
+        }
+      }
+    ]
+  },
+  "primary_nodes": [
+    {
+      "name": "D-glucuronate",
+      "id": "MNXM241",
+      "formula": "C6H9O7"
+    },
+    {
+      "name": "myo-inositol",
+      "id": "MNXM127",
+      "formula": "C6H12O6"
+    },
+    {
+      "name": "1D-myo-inositol 1-phosphate",
+      "id": "MNXM646",
+      "formula": "C6H11O9P"
+    },
+    {
+      "name": "1D-myo-inositol 1,3-biphosphate",
+      "id": "MNXM5702",
+      "formula": "C6H10O12P2"
+    },
+    {
+      "name": "1D-myo-inositol 1,3,4-trisphosphate",
+      "id": "MNXM532",
+      "formula": "C6H9O15P3"
+    },
+    {
+      "name": "1D-myo-inositol 1,3,4,6-tetrakisphosphate",
+      "id": "MNXM929",
+      "formula": "C6H8O18P4"
+    }
+  ]
+}

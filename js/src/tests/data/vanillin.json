@@ -1,0 +1,271 @@
+{
+  "reactions": [
+    {
+      "name": "rhea:23276",
+      "reaction_string": "3-methyl-2-oxobutanoate + formaldehyde <=> 2-dehydropantoate",
+      "id": "MNXR7147"
+    },
+    {
+      "name": "rhea:24848",
+      "reaction_string": "H2O + 3,4-dihydroxybenzoate <=> 3-dehydroshikimate",
+      "id": "MNXR68718"
+    },
+    {
+      "name": "rhea:13021",
+      "reaction_string": "H(+) + NADH + O2 + vanillate <=> H2O + 3,4-dihydroxybenzoate + formaldehyde + NAD(+)",
+      "id": "MNXR5340"
+    },
+    {
+      "name": "rhea:13309",
+      "reaction_string": "2.0 H(+) + NADH + vanillate <=> H2O + vanillin + NAD(+)",
+      "id": "MNXR5336"
+    }
+  ],
+  "model": {
+    "id": "test",
+    "version": 1,
+    "metabolites": [
+      {
+        "name": "vanillin",
+        "formula": "C8H8O3",
+        "compartment": "",
+        "charge": 0,
+        "annotation": {
+          "source": "chebi:18346",
+          "InChI": "InChI=1S/C8H8O3/c1-11-8-4-6(5-9)2-3-7(8)10/h2-5,10H,1H3",
+          "mass": "152.1473"
+        },
+        "id": "MNXM754"
+      },
+      {
+        "name": "NADH",
+        "formula": "C21H27N7O14P2",
+        "compartment": "",
+        "charge": -2,
+        "annotation": {
+          "source": "chebi:57945",
+          "InChI": "InChI=1S/C21H29N7O14P2/c22-17-12-19(25-7-24-17)28(8-26-12)21-16(32)14(30)11(41-21)6-39-44(36,37)42-43(34,35)38-5-10-13(29)15(31)20(40-10)27-3-1-2-9(4-27)18(23)33/h1,3-4,7-8,10-11,13-16,20-21,29-32H,2,5-6H2,(H2,23,33)(H,34,35)(H,36,37)(H2,22,24,25)/p-2/t10-,11-,13-,14-,15-,16-,20-,21-/m1/s1",
+          "mass": "663.4251"
+        },
+        "id": "MNXM10"
+      },
+      {
+        "name": "NAD(+)",
+        "formula": "C21H26N7O14P2",
+        "compartment": "",
+        "charge": -1,
+        "annotation": {
+          "source": "chebi:57540",
+          "InChI": "InChI=1S/C21H27N7O14P2/c22-17-12-19(25-7-24-17)28(8-26-12)21-16(32)14(30)11(41-21)6-39-44(36,37)42-43(34,35)38-5-10-13(29)15(31)20(40-10)27-3-1-2-9(4-27)18(23)33/h1-4,7-8,10-11,13-16,20-21,29-32H,5-6H2,(H5-,22,23,24,25,33,34,35,36,37)/p-1/t10-,11-,13-,14-,15-,16-,20-,21-/m1/s1",
+          "mass": "662.4172"
+        },
+        "id": "MNXM8"
+      },
+      {
+        "name": "vanillate",
+        "formula": "C8H7O4",
+        "compartment": "",
+        "charge": -1,
+        "annotation": {
+          "source": "chebi:16632",
+          "InChI": "InChI=1S/C8H8O4/c1-12-7-4-5(8(10)11)2-3-6(7)9/h2-4,9H,1H3,(H,10,11)/p-1",
+          "mass": "167.1388"
+        },
+        "id": "MNXM982"
+      },
+      {
+        "name": "H2O",
+        "formula": "H2O",
+        "compartment": "",
+        "charge": 0,
+        "annotation": {
+          "source": "chebi:15377",
+          "InChI": "InChI=1S/H2O/h1H2",
+          "mass": "18.0153"
+        },
+        "id": "MNXM2"
+      },
+      {
+        "name": "H(+)",
+        "formula": "H",
+        "compartment": "",
+        "charge": 1,
+        "annotation": {
+          "source": "chebi:15378",
+          "InChI": "InChI=1S/p+1",
+          "mass": "1.0079"
+        },
+        "id": "MNXM1"
+      },
+      {
+        "name": "3-dehydroshikimate",
+        "formula": "C7H7O5",
+        "compartment": "",
+        "charge": -1,
+        "annotation": {
+          "source": "chebi:16630",
+          "InChI": "InChI=1S/C7H8O5/c8-4-1-3(7(11)12)2-5(9)6(4)10/h3,6,10H,1-2H2,(H,11,12)/p-1/t3?,6-",
+          "mass": "171.1275"
+        },
+        "id": "MNXM611"
+      },
+      {
+        "name": "3,4-dihydroxybenzoate",
+        "formula": "C7H5O4",
+        "compartment": "",
+        "charge": -1,
+        "annotation": {
+          "source": "chebi:36241",
+          "InChI": "InChI=1S/C7H6O4/c8-5-2-1-4(7(10)11)3-6(5)9/h1-3,8-9H,(H,10,11)/p-1",
+          "mass": "153.1122"
+        },
+        "id": "MNXM204"
+      },
+      {
+        "name": "O2",
+        "formula": "O2",
+        "compartment": "",
+        "charge": 0,
+        "annotation": {
+          "source": "chebi:15379",
+          "InChI": "InChI=1S/O2/c1-2",
+          "mass": "31.9988"
+        },
+        "id": "MNXM4"
+      },
+      {
+        "name": "formaldehyde",
+        "formula": "CH2O",
+        "compartment": "",
+        "charge": 0,
+        "annotation": {
+          "source": "chebi:16842",
+          "InChI": "InChI=1S/CH2O/c1-2/h1H2",
+          "mass": "30.026"
+        },
+        "id": "MNXM56"
+      },
+      {
+        "name": "3-methyl-2-oxobutanoate",
+        "formula": "C5H7O3",
+        "compartment": "",
+        "charge": -1,
+        "annotation": {
+          "source": "chebi:11851",
+          "InChI": "InChI=1S/C5H8O3/c1-3(2)4(6)5(7)8/h3H,1-2H3,(H,7,8)/p-1",
+          "mass": "115.1073"
+        },
+        "id": "MNXM238"
+      },
+      {
+        "name": "2-dehydropantoate",
+        "formula": "C6H9O4",
+        "compartment": "",
+        "charge": -1,
+        "annotation": {
+          "source": "chebi:11561",
+          "InChI": "InChI=1S/C6H10O4/c1-6(2,3-7)4(8)5(9)10/h7H,3H2,1-2H3,(H,9,10)/p-1",
+          "mass": "145.1333"
+        },
+        "id": "MNXM959"
+      }
+    ],
+    "genes": [],
+    "reactions": [
+      {
+        "name": "rhea:13309",
+        "id": "MNXR5336",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "2 `H(+)` + 1 `NADH` + 1 `vanillate` = 1 `H2O` + 1 `vanillin` + 1 `NAD(+)`",
+          "EC": "1.2.1.67"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM8": 1,
+          "MNXM982": -1,
+          "MNXM2": 1,
+          "MNXM10": -1,
+          "MNXM754": 1,
+          "MNXM1": -2
+        }
+      },
+      {
+        "name": "rhea:24848",
+        "id": "MNXR68718",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `H2O` + 1 `3,4-dihydroxybenzoate` = 1 `3-dehydroshikimate`",
+          "EC": "4.2.1.118"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM204": -1,
+          "MNXM611": 1,
+          "MNXM2": -1
+        }
+      },
+      {
+        "name": "rhea:13021",
+        "id": "MNXR5340",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `H(+)` + 1 `NADH` + 1 `O2` + 1 `vanillate` = 1 `H2O` + 1 `3,4-dihydroxybenzoate` + 1 `formaldehyde` + 1 `NAD(+)`",
+          "EC": "1.14.13.82"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM4": -1,
+          "MNXM8": 1,
+          "MNXM1": -1,
+          "MNXM204": 1,
+          "MNXM2": 1,
+          "MNXM10": -1,
+          "MNXM982": -1,
+          "MNXM56": 1
+        }
+      },
+      {
+        "name": "rhea:23276",
+        "id": "MNXR7147",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `3-methyl-2-oxobutanoate` + 1 `formaldehyde` = 1 `2-dehydropantoate`",
+          "EC": "2.1.2.11;4.1.2.12"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM959": 1,
+          "MNXM238": -1,
+          "MNXM56": -1
+        }
+      }
+    ]
+  },
+  "primary_nodes": [
+    {
+      "name": "formaldehyde",
+      "id": "MNXM56",
+      "formula": "CH2O"
+    },
+    {
+      "name": "3,4-dihydroxybenzoate",
+      "id": "MNXM204",
+      "formula": "C7H5O4"
+    },
+    {
+      "name": "vanillate",
+      "id": "MNXM982",
+      "formula": "C8H7O4"
+    },
+    {
+      "name": "vanillin",
+      "id": "MNXM754",
+      "formula": "C8H8O3"
+    }
+  ]
+}
