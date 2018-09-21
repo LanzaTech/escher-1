@@ -66,6 +66,7 @@
     "kekule": "https://github.com/AaronLlanos/Kekule.js#webpack-kekule",
     "mousetrap": "^1.5.3",
     "preact": "^8.2.1",
+    "raphael": "^2.2.7",
     "underscore": "^1.8.3",
     "vkbeautify": "^0.99.1"
   },

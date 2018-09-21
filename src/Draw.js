@@ -37,6 +37,7 @@ var d3_mouse = require('d3-selection').mouse
 var d3_touch = require('d3-selection').touch
 var Kekule = require('kekule').Kekule;
 var Draw = utils.make_class()
+
 // instance methods
 Draw.prototype = {
   init: init,
