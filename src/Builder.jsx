@@ -24,6 +24,7 @@ import TooltipContainer from './TooltipContainer'
 import DefaultTooltip from './DefaultTooltip'
 import CustomTooltip from './CustomTooltip'
 import Consts from './Consts'
+import MoleculeDrawing from './MoleculeDrawing'
 
 import _ from 'underscore'
 import { select as d3Select, selection as d3Selection } from 'd3-selection'
@@ -140,7 +141,7 @@ class Builder {
       cofactors: Consts.cofactors,
       tooltip: 'default',
       // Extensions
-      tooltip_component: options.tooltip === 'custom' ? CustomTooltip : DefaultTooltip,
+      tooltip_component: CustomTooltip,
       tooltip_callbacks: null,
       enable_tooltips: ['label', 'object'],
       reaction_scale_preset: null,

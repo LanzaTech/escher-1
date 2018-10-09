@@ -63,10 +63,9 @@
     "file-saver": "^1.3.3",
     "immutability-helper": "^2.4.0",
     "jsnetworkx": "^0.3.4",
-    "kekule": "https://github.com/AaronLlanos/Kekule.js#webpack-kekule",
+    "kekule": "https://github.com/SigitaR/Kekule.js.git#webpack-kekule",
     "mousetrap": "^1.5.3",
     "preact": "^8.2.1",
-    "raphael": "^2.2.7",
     "underscore": "^1.8.3",
     "vkbeautify": "^0.99.1"
   },

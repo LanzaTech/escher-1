@@ -35,7 +35,6 @@ var d3_format = require('d3-format').format
 var d3_select = require('d3-selection').select
 var d3_mouse = require('d3-selection').mouse
 var d3_touch = require('d3-selection').touch
-var Kekule = require('kekule').Kekule;
 var Draw = utils.make_class()
 
 // instance methods
