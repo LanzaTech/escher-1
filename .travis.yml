@@ -1,32 +1,30 @@
-language: python
-python:
-  - "2.7"
-  - "3.5"
-  - "3.6"
-# Latest node
-before_install:
-  - nvm install 8.3.0
-  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.27.5
-  - export PATH=$HOME/.yarn/bin:$PATH
-# Install dependencies
+language: node_js
+node_js: "11"
+
+cache: npm
+
 install:
-  - yarn install
-  - yarn build
-  - yarn copy
-  - cd py
-  - pip install -U pip
-  - pip install swiglpk --only-binary swiglpk
-  - pip install -e .
-  - cd ..
-# Run tests
+  - npm ci
+
 script:
-  - yarn test
-  - if [[ $TRAVIS_PYTHON_VERSION = '3.6' ]]; then yarn coverage; fi
-  - cd py
-  - python setup.py test
-  - cd ..
-# No emails
+  - npm run test
+  - npm run build
+
 notifications:
   email: false
-# Run with containers
-sudo: false
+  slack:
+    rooms:
+      - secure: "UONml9kjcaQBV5uMwTm6LE/G0j2ZCsQw2IbvvBz/lBOL7tz/mF2gDCWcSt+5/ZXhGvsAa8vlWJkN9Gfo4LUPTl3CPA0Nrx/30BxGS+2iVCawC0x00jNEgzoEjHV0CEUziFXemJPbE7wDlNgekTU9EvNMAUhlTr5AbTiNxYhTINCLp2hbhd1UIcy6GatagllBOl0sPZHxJBQlVQwhnoLvIfaCqEEolSnqoqoD52GXcSayctr0N5yPOno5eNEMS7J44cNVOWYBQksqggKpF1y3w07yv96iMKSbnCXynTDaBx4iMGTs2TJWaxbxubtZIRDgT+7YdNbpuTNh3cB1fA5hHAxgaDbEy0BqiKZUx7Gbr8B9Fq14z/zHF6VSQDmUkbMB7mgUqLEX5B2NMLKg58M3N1W1ynQbtLE6+kidgVzrU2yCAAysi58suA6TV+C1KvJxoD78U96IeORsEQExEBGwU0RCKLe+Qd4J3xlgQWOLRTygdQ+KTwSHrijOoGGvWxi9EldVn1QqV1yn1Z7UOxeRSh7fAZ6YovEgN41rPnNLIXE4G89Dx7SBWmo9BINmZa5B6JIFnjztRiszAku1wBS24G6uI6IO3IzIlHU01eKk0jVXa+7g9PUVjmN1ICoUPs6iYNcwSgo2wVW6Mn7l/S6kTceS4BAetHNxI8twcFtC45U="
+    on_success: change
+    on_failure: change
+    on_pull_requests: false
+
+deploy:
+  provider: npm
+  email: ali@kvikshaug.no
+  api_key:
+    secure: "w7XCtnuzsfPz42yc2/UrImnJWjYme1dyd0pDgNrIAGMsGC2drN55HB6LKivWYNzfEJg2wmFyH+c1dMKcPAxQpBXRqgUMK0otg1eV0p9g4BLk4ExX51PijThLpW7a8CLP7Cw7/m2AR9b2MbciNE6Gyr7wpXlibtIRD2qSd68WlJJry84pJoVu+j2FOa9Ysi0CnnMd9zKhYGaeu4lZE5zCYN246bXcsQ0BqRaMxuWZsZoKFfHCQZ6tFH0YyhjldWmbRFEzPlz5lwDtwkMM/0PRbb5MYEXW5ye8/vJZL73Ls7UJVd1S10mo5c/zZt75MwRb6RQ1lvAqCH7VAeczSO22C/wiqIR/YyCclzdjtCG+VV5JPoo1CWihOm7fvcbVi2K/O+3GLcmWJH2RmJiZGAY7wlmMuOrfjQXOeD++Un5/OlJYm0u/iGOjg60JhYOAPOGN4K5LQn6S0SsLK7DyJF+rCFgGK0KMa6qFMbilcO8ArXEX3we0Xsx/ifnt3oOeqKQMYxsWq5JkpJVbRijTKosnU+54ddDCHzwSRYGh11su/U/p1uq7Ra9m/uGdHVXgoC1p769ojvgRjBErWu6/fah/1rNEP4H6ZpSiQgCieiB8EAEKbCQF7AMEU4wfrDD5YBNM/ZQBQUmCeqRWtgDX9zGoXpqkD5MORslVcPb663NFShk="
+  on:
+    tags: true
+    repo: DD-DeCaF/escher
+  skip_cleanup: true

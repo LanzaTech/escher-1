@@ -28,7 +28,6 @@ py/escher/package.json
 link-site
 
 # npm and yarn
-package-lock.json
 node_modules/
 .yarnclean
 .mypy_cache/
