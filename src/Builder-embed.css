@@ -36,7 +36,7 @@ svg.escher-svg .gene-label {
   cursor: default;
 }
 svg.escher-svg .text-label .label {
-  font-size: 50px;
+  font-size: 75px;
 }
 svg.escher-svg .text-label-input {
   font-size: 50px;
@@ -70,6 +70,9 @@ svg.escher-svg .segment {
 }
 svg.escher-svg .arrowhead {
   fill: #334E75;
+}
+svg.escher-svg .highlight {
+ filter: url(#escher-glow-filter);
 }
 svg.escher-svg .stoichiometry-label-rect {
   fill: white;
@@ -136,4 +139,8 @@ svg.escher-svg .cursor-grabbing {
 }
 svg.escher-svg .edit-text-cursor {
   cursor: text;
+}
+svg.escher-svg .gene-ko-mark {
+  text-decoration: line-through;
+  fill: red;
 }

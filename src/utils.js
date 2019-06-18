@@ -2,6 +2,8 @@
 
 var vkbeautify = require('vkbeautify')
 var _ = require('underscore')
+const Consts = require('./Consts')
+
 var d3_json = require('d3-request').json
 var d3_text = require('d3-request').text
 var d3_csvParseRows = require('d3-dsv').csvParseRows
@@ -64,7 +66,13 @@ module.exports = {
   get_document: get_document,
   get_window: get_window,
   d3_transform_catch: d3_transform_catch,
-  check_browser: check_browser
+  check_browser: check_browser,
+  calculate_fva_opacity: calculate_fva_opacity,
+  findMap: findMap,
+  isMetabolite: isMetabolite,
+  htmlToElement: htmlToElement,
+  object_slice_for_bigg: object_slice_for_bigg,
+  get_central_or_last_nodes: get_central_or_last_nodes,
 }
 
 /**
@@ -1138,4 +1146,77 @@ function check_browser (name) {
   } catch (e) {
     return false
   }
+}
+
+function calculate_fva_opacity(flux, lower, upper) {
+  if (Math.abs(lower - upper) < 1e-6) {
+    return 1;
+  }
+  else if (lower < 0 && upper > 0) {
+    return 0.2;
+  }
+  else if (lower <= 1e-6 || upper >= -1e-6) {
+    return 0.5;
+  }
+  else if (lower > 1e-6 || upper < -1e-6) {
+    return 0.8;
+  }
+}
+
+// returns the first element
+function findMap(array, pred) {
+  return array.reduce((accumulator, next) => (accumulator || pred(next)), null)
+}
+
+function isMetabolite(metabolite, cofactors = Consts.cofactors) {
+  return !(cofactors.includes(decompartmentalize(metabolite)[0]))
+}
+
+function htmlToElement(html) {
+  var template = document.createElement('template');
+  html = html.trim(); // Never return a text node of whitespace as the result
+  template.innerHTML = html;
+  return template.content.firstChild;
+}
+
+function object_slice_for_bigg(obj, bigg_ids) {
+  /** Return a copy of the object with just the given bigg ids.
+   Arguments
+   ---------
+   obj: An object.
+   ids: An array of bigg id strings.
+   */
+  var subset = {};
+
+  _.each(_.keys(obj), function (key) {
+    if (_.contains(bigg_ids, obj[key].bigg_id)) subset[key] = obj[key];
+  });
+
+  return subset;
+}
+
+/**
+ *
+ * @param {*} reactions
+ */
+function get_central_or_last_nodes(reactions) {
+  return Object.assign({}, ...Object.entries(reactions).map(([r_id, {segments}]) => {
+    segments = Object.values(segments);
+    if (segments.length >= 5) {
+      segments = segments.filter((segment) => {
+        return (segment.b1 === null && segment.b2 === null);
+      });
+    }
+    const nodes = segments.map((seg) => {
+      return [seg.from_node_id, seg.to_node_id];
+    });
+    let node;
+    if (nodes.length === 1) {
+      // Use the last node for reactions with one segment
+      node = nodes[0][1];
+    } else {
+      // Extract a not ending node
+      node = nodes[0].filter(x => new Set(nodes[1]).has(x));}
+    return {[r_id]: [node]};
+  }));
 }

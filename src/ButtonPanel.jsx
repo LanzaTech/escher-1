@@ -29,11 +29,7 @@ class ButtonPanel extends Component {
             <i className='icon-zoom-out' />
           </button>
         </li>
-        <li
-          style={this.props.all
-          ? {display: 'block'}
-          : {display: 'none'}}
-        >
+        <li>
           <button
             className='button btn'
             onClick={() => this.props.map.zoom_extent_canvas()}
@@ -53,6 +49,15 @@ class ButtonPanel extends Component {
             title='Toggle full screen view (2)'
           >
             <i className='icon-resize-full-alt' />
+          </button>
+        </li>
+        <li>
+          <button
+            className='button btn'
+            onClick={() => this.props.search()}
+            title='Show Search'
+          >
+            <i className='icon-search' />
           </button>
         </li>
         <li

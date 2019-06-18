@@ -42,6 +42,7 @@ Behavior.prototype = {
   toggle_object_mouseover: toggle_object_mouseover,
   toggle_object_touch: toggle_object_touch,
   toggle_bezier_drag: toggle_bezier_drag,
+  toggle_reaction_hover: toggle_reaction_hover,
   // util
   turn_off_drag: turn_off_drag,
   // get drag behaviors
@@ -77,6 +78,9 @@ function init (map, undo_stack) {
   this.label_mousedown = null
   this.label_mouseover = null
   this.label_mouseout = null
+  this.reaction_mousedown = null
+  this.reaction_mouseover = null
+  this.reaction_mouseout = null
   this.label_touch = null
   this.object_mouseover = null
   this.object_touch = null
@@ -101,6 +105,18 @@ function turn_everything_on () {
   this.toggle_label_touch(true)
   this.toggle_object_mouseover(true)
   this.toggle_object_touch(true)
+  this.toggle_reaction_hover(true)
+}
+
+
+/**
+ * Listen for mouse events on reactions.
+ */
+function toggle_reaction_hover(on_off) {
+  if (!on_off) {
+    this.reaction_mouseout = null;
+    this.reaction_mouseover = null;
+  }
 }
 
 /**
@@ -114,6 +130,7 @@ function turn_everything_off () {
   this.toggle_label_touch(false)
   this.toggle_object_mouseover(false)
   this.toggle_object_touch(false)
+  this.toggle_reaction_hover(false)
 }
 
 /**

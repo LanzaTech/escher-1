@@ -22,12 +22,16 @@ import QuickJump from './QuickJump'
 import dataStyles from './data_styles'
 import TooltipContainer from './TooltipContainer'
 import DefaultTooltip from './DefaultTooltip'
+import CustomTooltip from './CustomTooltip'
+import Consts from './Consts'
+
 import _ from 'underscore'
 import { select as d3Select, selection as d3Selection } from 'd3-selection'
 import { json as d3Json } from 'd3-request'
 
 // Include custom font set for icons
 import '../icons/css/fontello.css'
+import '../icons/css/fontello-search.css'
 
 // Include GUI CSS normally with webpack
 import './Builder.css'
@@ -68,7 +72,6 @@ class Builder {
     this.settingsMenuRef = null
     this.search_bar_div = null
     this.searchBarRef = null
-    this.semanticOptions = null
 
     // apply this object as data for the selection
     this.selection.datum(this)
@@ -91,7 +94,41 @@ class Builder {
       full_screen_button: false,
       ignore_bootstrap: false,
       disabled_buttons: null,
-      semantic_zoom: null,
+      semantic_zoom: [
+          {
+            zoomLevel: 0.12,
+            options: {
+              hide_all_labels: true,
+              show_gene_reaction_rules: false,
+              hide_secondary_metabolites: true
+            }
+          },
+          {
+            zoomLevel: 0.3,
+            options: {
+              hide_all_labels: false,
+              show_gene_reaction_rules: false,
+              hide_secondary_metabolites: true
+            }
+          },
+          {
+            zoomLevel: 0.4,
+            options: {
+              hide_all_labels: false,
+              show_gene_reaction_rules: false,
+              hide_secondary_metabolites: false
+            }
+          },
+          {
+            zoomLevel: 1,
+            options: {
+              hide_all_labels: false,
+              show_gene_reaction_rules: true,
+              hide_secondary_metabolites: false
+            }
+          }
+        ],
+        
       // map, model, and styles
       starting_reaction: null,
       never_ask_before_quit: false,
@@ -103,10 +140,12 @@ class Builder {
       hide_secondary_metabolites: false,
       show_gene_reaction_rules: false,
       hide_all_labels: false,
+      enable_fva_opacity: true,
       canvas_size_and_loc: null,
       // applied data
       // reaction
       reaction_data: null,
+      reaction_fva_data: null,
       reaction_styles: ['color', 'size', 'text'],
       reaction_compare_style: 'log2_fold',
       reaction_scale: [ { type: 'min', color: '#c8c8c8', size: 12 },
@@ -114,9 +153,14 @@ class Builder {
                         { type: 'max', color: '#ff0000', size: 25 } ],
       reaction_no_data_color: '#dcdcdc',
       reaction_no_data_size: 8,
+      reaction_knockout: [],
+      added_reactions: [],
+      reaction_highlight: [],
+      reaction_opacity: {},
       // gene
       gene_data: null,
       and_method_in_gene_reaction_rule: 'mean',
+      gene_knockout: [],
       // metabolite
       metabolite_data: null,
       metabolite_styles: ['color', 'size', 'text'],
@@ -130,12 +174,12 @@ class Builder {
       identifiers_on_map: 'bigg_id',
       highlight_missing: false,
       allow_building_duplicate_reactions: false,
-      cofactors: [
-        'atp', 'adp', 'nad', 'nadh', 'nadp', 'nadph', 'gtp', 'gdp', 'h', 'coa',
-        'ump', 'h2o', 'ppi'
-      ],
+      cofactors: Consts.cofactors,
+      tooltip: 'default',
       // Extensions
-      tooltip_component: DefaultTooltip,
+      tooltip_component: options.tooltip === 'custom' ? CustomTooltip : DefaultTooltip,
+      reaction_state: null,
+      tooltip_callbacks: null,
       enable_tooltips: ['label', 'object'],
       reaction_scale_preset: null,
       metabolite_scale_preset: null,
@@ -226,6 +270,9 @@ class Builder {
             if (this.options[option] !== value) {
               this.settings.set_conditional(option, value)
               this._update_data(false, true)
+              if (this.options.gene_knockout.length > 0) {
+                this.set_knockout_genes(this.options.gene_knockout)
+              }
             }
           })
         }
@@ -235,7 +282,9 @@ class Builder {
     // Set up the tooltip container
     this.tooltip_container = new TooltipContainer(this.selection,
                                                   this.options.tooltip_component,
-                                                  this.zoom_container)
+                                                  this.zoom_container,
+                                                  this.options.tooltip_callbacks,
+                                                  this.options.reaction_state)
 
     // Status in both modes
     this._create_status(this.selection)
@@ -294,10 +343,28 @@ class Builder {
       this._setup_quick_jump(this.selection)
 
       if (message_fn !== null) setTimeout(message_fn, 500)
+      
+      this.map.set_these_highlights(this.options.reaction_highlight);
+
+      this.map.set_these_opacity_reactions(this.options.reaction_opacity);
 
       // Finally run callback
       _.defer(() => this.callback_manager.run('first_load', this))
     })
+
+    if (!document.getElementById('escher-glow-filter')) {
+      const filterElement = utils.htmlToElement(`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="position: absolute; top: -99999px">
+          <filter id="escher-glow-filter">
+              <feGaussianBlur stdDeviation="15" result="coloredBlur"/>
+              <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+          </filter>
+        </svg>`)
+      document.body.appendChild(filterElement)
+    }
   }
 
   /**
@@ -334,19 +401,6 @@ class Builder {
   load_map (map_data, should_update_data) {
     if (_.isUndefined(should_update_data)) {
       should_update_data = true
-    }
-
-    // Store map options that might be changed by semantic_zoom function
-    const tempSemanticOptions = {}
-    if (this.options.semantic_zoom) {
-      for (let level of this.options.semantic_zoom) {
-        Object.keys(level.options).map(option => {
-          if (tempSemanticOptions[option] === undefined) {
-            tempSemanticOptions[option] = this.options[option]
-          }
-        })
-      }
-      this.semanticOptions = Object.assign({}, tempSemanticOptions)
     }
 
     // Begin with some definitions
@@ -528,16 +582,7 @@ class Builder {
           {...this.map}
           mode={mode}
           settings={this.settings}
-          saveMap={() => {
-            // Revert options changed by semanticZoom to their original values if option is active
-            if (this.semanticOptions) {
-              Object.entries(this.semanticOptions).map(([key, value]) => {
-                this.settings.set_conditional(key, value)
-              })
-              this._update_data()
-            }
-            this.map.save()
-          }}
+          saveMap={() => this.map.save()}
           loadMap={(file) => this.load_map(file)}
           saveSvg={() => this.map.save_svg()}
           savePng={() => this.map.save_png()}
@@ -611,6 +656,7 @@ class Builder {
         all={this.options.menu === 'all'}
         fullscreen={this.options.full_screen_button}
         enableEditing={this.options.enable_editing}
+        search={() => this.renderSearchBar()}
         setMode={(newMode) => this._set_mode(newMode)}
         zoomContainer={this.zoom_container}
         map={this.map}
@@ -695,6 +741,107 @@ class Builder {
     /** For documentation of this function, see docs/javascript_api.rst.  */
     this.callback_manager.run('text_mode')
     this._set_mode('text')
+  }
+
+  set_reaction_fva_data(data) {
+    if (this.options.enable_fva_opacity) {
+      this.options.reaction_fva_data = data
+      this.map.update_these_reactions_opacity(data)
+      this.map.set_status('')
+    }
+  }
+  /**
+   * set_added_reactions
+   * 
+   * Takes a list of reactions to be added. It checks if the reaction is already drawn, if yes
+   * then it keeps it (and its position).
+   * Removes reactions that are drawn previously but not provided in the list.
+   * If any reactions are newly added, it zooms to it.
+   * 
+   * @param ['bigg_id', 'bigg_id'] added_reactions 
+   */
+  set_added_reactions(added_reactions) {
+    this.options.added_reactions.forEach((reaction) => {
+      reaction.undo()
+    })
+
+    let newlyAdded = []
+    while (true) {
+      const newReaction = this.map.draw_one_added_reaction(
+        added_reactions,
+        newlyAdded.map(reaction => reaction.bigg_id)
+      )
+      if (newReaction) {
+        newlyAdded.push(newReaction)
+        added_reactions = added_reactions.filter((reaction) => reaction !== newReaction.bigg_id)
+      }
+      if (!newReaction || !added_reactions.length) {
+        break
+      }
+    }
+    const { x, y } = this.map.canvas.size_and_location()
+    added_reactions.forEach((reaction, i) => {
+      const coordinates = {
+        x: x + 250,
+        y: y + 100 + i * 400
+      }
+      const newReaction = this.map.new_reaction_from_scratch(
+        reaction,
+        coordinates,
+        90)
+      newlyAdded.push(newReaction)
+    })
+
+    this.options.added_reactions = newlyAdded
+    // @matyasfodor - not sure if this is required
+    this.map.set_status('')
+  }
+
+  set_knockout_reactions(knockout_reaction_ids) {
+    this.map.clear_these_knockouts(this.options.reaction_knockout)
+    this.map.draw_these_knockouts(knockout_reaction_ids)
+
+    this.options.reaction_knockout = knockout_reaction_ids
+    this.map.set_status('')
+  }
+
+  knockout_reaction(data) {
+    this.options.reaction_knockout.push(data)
+    this.map.draw_these_knockouts(this.options.reaction_knockout)
+    this.map.set_status('')
+  }
+
+  undo_knockout_reaction(data) {
+    this.options.reaction_knockout.remove(data)
+    this.map.clear_these_knockouts(this.options.reaction_knockout)
+    this.map.set_status('')
+  }
+
+  draw_knockout_reactions() {
+    this.map.draw_these_knockouts(this.options.reaction_knockout)
+    this.map.set_status('')
+  }
+
+  set_knockout_genes(knockout_gene_ids) {
+    this.map.clear_gene_knockouts(this.options.gene_knockout)
+    this.map.draw_gene_knockouts(knockout_gene_ids)
+
+    this.options.gene_knockout = knockout_gene_ids
+    this.map.set_status('')
+  }
+
+  set_highlight_reactions(highlight_reaction_ids) {
+    this.map.clear_these_highlights()
+    this.map.set_these_highlights(highlight_reaction_ids)
+
+    this.options.reaction_highlight = highlight_reaction_ids
+  }
+
+  set_opacity_reactions(opacity_reaction_ids) {
+    this.map.clear_these_opacity_reactions()
+    this.map.set_these_opacity_reactions(opacity_reaction_ids)
+
+    this.options.reaction_opacity = opacity_reaction_ids
   }
 
   _reaction_check_add_abs () {
@@ -998,22 +1145,22 @@ class Builder {
                       enable_editing, full_screen_button) {
     var keys = {
       save: {
-        key: 'ctrl+s',
+        //key: 'ctrl+s',
         target: map,
         fn: map.save
       },
       save_svg: {
-        key: 'ctrl+shift+s',
+        //key: 'ctrl+shift+s',
         target: map,
         fn: map.save_svg
       },
       save_png: {
-        key: 'ctrl+shift+p',
+        //key: 'ctrl+shift+p',
         target: map,
         fn: map.save_png
       },
       load: {
-        key: 'ctrl+o',
+        //key: 'ctrl+o',
         fn: null // defined by button
       },
       convert_map: {
@@ -1025,7 +1172,7 @@ class Builder {
         fn: map.clear_map
       },
       load_model: {
-        key: 'ctrl+m',
+        //key: 'ctrl+m',
         fn: null // defined by button
       },
       clear_model: {
@@ -1047,45 +1194,45 @@ class Builder {
         fn: function () { this.set_gene_data(null, true) }
       },
       zoom_in_ctrl: {
-        key: 'ctrl+=',
+        //key: 'ctrl+=',
         target: zoom_container,
         fn: zoom_container.zoom_in
       },
       zoom_in: {
-        key: '=',
+        //key: '=',
         target: zoom_container,
         fn: zoom_container.zoom_in,
         ignore_with_input: true
       },
       zoom_out_ctrl: {
-        key: 'ctrl+-',
+        //key: 'ctrl+-',
         target: zoom_container,
         fn: zoom_container.zoom_out
       },
       zoom_out: {
-        key: '-',
+        //key: '-',
         target: zoom_container,
         fn: zoom_container.zoom_out,
         ignore_with_input: true
       },
       extent_nodes_ctrl: {
-        key: 'ctrl+0',
+        //key: 'ctrl+0',
         target: map,
         fn: map.zoom_extent_nodes
       },
       extent_nodes: {
-        key: '0',
+        //key: '0',
         target: map,
         fn: map.zoom_extent_nodes,
         ignore_with_input: true
       },
       extent_canvas_ctrl: {
-        key: 'ctrl+1',
+        //key: 'ctrl+1',
         target: map,
         fn: map.zoom_extent_canvas
       },
       extent_canvas: {
-        key: '1',
+        //key: '1',
         target: map,
         fn: map.zoom_extent_canvas,
         ignore_with_input: true
@@ -1095,7 +1242,7 @@ class Builder {
         fn: () => this.renderSearchBar()
       },
       search: {
-        key: 'f',
+        //key: 'f',
         fn: () => this.renderSearchBar(),
         ignore_with_input: true
       },
@@ -1105,7 +1252,7 @@ class Builder {
         ignore_with_input: true
       },
       show_settings_ctrl: {
-        key: 'ctrl+,',
+        //key: 'ctrl+,',
         target: settings_bar,
         fn: () => this.pass_settings_menu_props({
           ...this.options,
@@ -1115,7 +1262,7 @@ class Builder {
         })
       },
       show_settings: {
-        key: ',',
+        //key: ',',
         target: this,
         fn: () => this.pass_settings_menu_props({
           ...this.options,
@@ -1129,12 +1276,12 @@ class Builder {
     if (full_screen_button) {
       utils.extend(keys, {
         full_screen_ctrl: {
-          key: 'ctrl+2',
+          //key: 'ctrl+2',
           target: map,
           fn: map.full_screen
         },
         full_screen: {
-          key: '2',
+          //key: '2',
           target: map,
           fn: map.full_screen,
           ignore_with_input: true
@@ -1144,33 +1291,87 @@ class Builder {
     if (enable_editing) {
       utils.extend(keys, {
         build_mode: {
-          key: 'n',
+          //key: 'n',
           target: this,
           fn: this.build_mode,
           ignore_with_input: true
         },
         zoom_mode: {
-          key: 'z',
+          //key: 'z',
           target: this,
           fn: this.zoom_mode,
           ignore_with_input: true
         },
         brush_mode: {
-          key: 'v',
+          //key: 'v',
           target: this,
           fn: this.brush_mode,
           ignore_with_input: true
         },
         rotate_mode: {
-          key: 'r',
+          //key: 'r',
           target: this,
           fn: this.rotate_mode,
           ignore_with_input: true
         },
         text_mode: {
-          key: 't',
+          //key: 't',
           target: this,
           fn: this.text_mode,
+          ignore_with_input: true
+        },
+        set_added_reactions: {
+          key: 'set_added_reactions',
+          target: this,
+          fn: this.set_added_reactions,
+          ignore_with_input: true
+        },
+        set_knockout_reactions: {
+          key: 'set_knockout_reactions',
+          target: this,
+          fn: this.set_knockout_reactions,
+          ignore_with_input: true
+        },
+        knockout_reaction: {
+          key: 'knockout_reaction',
+          target: this,
+          fn: this.knockout_reaction,
+          ignore_with_input: true
+        },
+        undo_knockout_reaction: {
+          key: 'undo_knockout_reaction',
+          target: this,
+          fn: this.undo_knockout_reaction,
+          ignore_with_input: true
+        },
+        draw_knockout_reactions: {
+          key: 'draw_knockout_reactions',
+          target: this,
+          fn: this.undo_knockout_reaction,
+          ignore_with_input: true
+        },
+        set_knockout_genes: {
+          key: 'set_knockout_genes',
+          target: this,
+          fn: this.set_knockout_genes,
+          ignore_with_input: true
+        },
+        set_reaction_fva_data: {
+          key: 'set_reaction_fva_data',
+          target: this,
+          fn: this.set_reaction_fva_data,
+          ignore_with_input: true
+        },
+        set_highlight_reactions: {
+          key: 'set_highlight_reactions',
+          target: this,
+          fn: this.set_highlight_reactions,
+          ignore_with_input: true
+        },
+        set_opacity_reactions: {
+          key: 'set_opacity_reactions',
+          target: this,
+          fn: this.set_opacity_reactions,
           ignore_with_input: true
         },
         toggle_beziers: {
@@ -1180,76 +1381,76 @@ class Builder {
           ignore_with_input: true
         },
         delete_ctrl: {
-          key: 'ctrl+backspace',
+          //key: 'ctrl+backspace',
           target: map,
           fn: map.delete_selected,
           ignore_with_input: true
         },
         delete: {
-          key: 'backspace',
+          //key: 'backspace',
           target: map,
           fn: map.delete_selected,
           ignore_with_input: true
         },
         delete_del: {
-          key: 'del',
+          //key: 'del',
           target: map,
           fn: map.delete_selected,
           ignore_with_input: true
         },
         toggle_primary: {
-          key: 'p',
+          //key: 'p',
           target: map,
           fn: map.toggle_selected_node_primary,
           ignore_with_input: true
         },
         cycle_primary: {
-          key: 'c',
+          //key: 'c',
           target: map,
           fn: map.cycle_primary_node,
           ignore_with_input: true
         },
         direction_arrow_right: {
-          key: 'right',
+         // key: 'right',
           target: this.build_input.direction_arrow,
           fn: this.build_input.direction_arrow.right,
           ignore_with_input: true
         },
         direction_arrow_down: {
-          key: 'down',
+          //key: 'down',
           target: this.build_input.direction_arrow,
           fn: this.build_input.direction_arrow.down,
           ignore_with_input: true
         },
         direction_arrow_left: {
-          key: 'left',
+          //key: 'left',
           target: this.build_input.direction_arrow,
           fn: this.build_input.direction_arrow.left,
           ignore_with_input: true
         },
         direction_arrow_up: {
-          key: 'up',
+          //key: 'up',
           target: this.build_input.direction_arrow,
           fn: this.build_input.direction_arrow.up,
           ignore_with_input: true
         },
         undo: {
-          key: 'ctrl+z',
+          //key: 'ctrl+z',
           target: map.undo_stack,
           fn: map.undo_stack.undo
         },
         redo: {
-          key: 'ctrl+shift+z',
+          //key: 'ctrl+shift+z',
           target: map.undo_stack,
           fn: map.undo_stack.redo
         },
         select_all: {
-          key: 'ctrl+a',
+          //key: 'ctrl+a',
           target: map,
           fn: map.select_all
         },
         select_none: {
-          key: 'ctrl+shift+a',
+          //key: 'ctrl+shift+a',
           target: map,
           fn: map.select_none
         },

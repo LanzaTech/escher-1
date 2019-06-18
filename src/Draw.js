@@ -25,7 +25,7 @@
  * draw.callback_manager.run('update_node', draw, update_selection)
  * draw.callback_manager.run('create_text_label', draw, enter_selection)
  * draw.callback_manager.run('update_text_label', draw, update_selection)
- *
+ * draw.callback_manager.run('update_knockout_mark', draw, update_selection);
  */
 
 var utils = require('./utils')
@@ -53,7 +53,9 @@ Draw.prototype = {
   create_reaction_label: create_reaction_label,
   update_reaction_label: update_reaction_label,
   create_segment: create_segment,
-  update_segment: update_segment
+  update_segment: update_segment,
+  update_knockout_mark: update_knockout_mark,
+  update_reaction_opacity: update_reaction_opacity
 }
 module.exports = Draw
 
@@ -122,6 +124,10 @@ function create_reaction (enter_selection) {
  */
 function update_reaction (update_selection, scale, cobra_model, drawn_nodes,
                           defs, has_data_on_reactions) {
+   var reaction_mousedown_fn = this.behavior.reaction_mousedown
+   var reaction_mouseover_fn = this.behavior.reaction_mouseover
+   var reaction_mouseout_fn = this.behavior.reaction_mouseout
+
   // Update reaction label
   update_selection.select('.reaction-label-group')
     .call(function(sel) {
@@ -140,6 +146,8 @@ function update_reaction (update_selection, scale, cobra_model, drawn_nodes,
                                sel.remove()
                              })
 
+    update_selection.on('mouseover', reaction_mouseover_fn);
+    update_selection.on('mouseout', reaction_mouseout_fn);
   // run the callback
   this.callback_manager.run('update_reaction', this, update_selection)
 }
@@ -159,6 +167,38 @@ function create_reaction_label (enter_selection, tool) {
   this.callback_manager.run('create_reaction_label', this, enter_selection)
 
   return group
+}
+
+function update_knockout_mark(update_selection) {
+  
+    var g = update_selection.append('g')
+            .attr('class', 'ko-mark')
+            .attr('id', function(d) { return 'ko' + d.node_id; });  
+     g.append('text')
+        .attr('transform', function(d) {
+            return 'translate(' + d.x + ',' + d.y + ')';          
+          })
+        .append('tspan')
+        .text('X')
+        .style('fill', 'red')
+        .style('font-size', '95px')
+        .attr('dx', -25)
+        .attr('dy', 30);
+  
+    this.callback_manager.run('update_knockout_mark', this, update_selection);
+}
+
+function update_reaction_opacity(update_selection) {
+  
+    update_selection.selectAll('.segment')
+        .style('opacity', function(d) {
+            var reaction_data = this.parentNode.parentNode.__data__;
+            var opacity = utils.calculate_fva_opacity(d.data, reaction_data.lower_bound, reaction_data.upper_bound);
+            if (isNaN(opacity)) {
+              opacity = 1;
+            }
+            return opacity;
+        });
 }
 
 /**
@@ -253,6 +293,7 @@ function update_reaction_label (update_selection, has_data_on_reactions) {
   // enter
   var gene_g = all_genes_g.enter()
     .append('g')
+    .attr('id', function (d) { return 'g' + d.bigg_id; })
     .attr('class', 'gene-label-group')
   gene_g.append('text')
     .attr('class', 'gene-label')
@@ -401,6 +442,10 @@ function update_segment (update_selection, scale, cobra_model,
       }
       curve += (end.x + ',' + end.y)
       return curve
+    })
+    .attr('stroke-dasharray', function (d) {
+      var f = d.data
+      return f === null ? '23, 23' : null
     })
     .style('stroke', function(d) {
       var reaction_id = this.parentNode.parentNode.__data__.bigg_id

@@ -10,6 +10,7 @@
   padding-left: 0;
   -ms-touch-action: none;
   touch-action: none;
+  list-style: none;
 }
 
 .escher-container .buttonPanel>li {
