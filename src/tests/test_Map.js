@@ -8,7 +8,7 @@ const beforeEach = require('mocha').beforeEach
 const assert = require('chai').assert
 
 const d3Body = require('./helpers/d3Body')
-const get_map = require('./helpers/get_map')
+const get_map = require('./helpers/get_map').get_map
 
 const _ = require('underscore')
 

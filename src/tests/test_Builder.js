@@ -4,13 +4,15 @@ const d3Body = require('./helpers/d3Body')
 
 // Should test for the broken function that use utils.draw_array/object
 
-const get_map = require('./helpers/get_map')
-const get_model = require('./helpers/get_model')
+const get_map = require('./helpers/get_map').get_map
+const get_small_map = require('./helpers/get_map').get_small_map
+const get_model = require('./helpers/get_model').get_model
+const get_small_model = require('./helpers/get_model').get_small_model
 
 const describe = require('mocha').describe
 const it = require('mocha').it
-const mocha = require('mocha')
 const assert = require('assert')
+const sinon = require('sinon')
 
 function make_parent_sel (s) {
   var element = s.append('div');
@@ -31,7 +33,7 @@ function make_parent_sel (s) {
 }
 
 describe('Builder', () => {
-  it('Small map, no model. Async tests.', (done) => {
+  it('Small map, no model. Multiple instances.', (done) => {
     const sel = make_parent_sel(d3Body)
     const b = Builder(get_map(), null, '', sel, {
       never_ask_before_quit: true,
@@ -77,8 +79,16 @@ describe('Builder', () => {
    * passing scales to Builder.
    */
   it('does not modify user scales', () => {
-    const reactionScale = [{ type: 'median', color: '#9696ff', size: 8 }]
-    const metaboliteScale = [{ type: 'median', color: '#9696ff', size: 8 }]
+    const reactionScale = [
+      { type: 'median', color: '#9696ff', size: 8 },
+      { type: 'min', color: '#ffffff', size: 10 },
+      { type: 'max', color: '#ffffff', size: 10 }
+    ]
+    const metaboliteScale = [
+      { type: 'median', color: 'red', size: 0 },
+      { type: 'min', color: 'red', size: 0 },
+      { type: 'max', color: 'red', size: 0 }
+    ]
     const b = Builder(
       null,
       null,

@@ -1,4 +1,5 @@
 var Behavior = require('../Behavior');
+const Settings = require('../Settings');
 
 var describe = require('mocha').describe;
 var it = require('mocha').it;
@@ -52,7 +53,10 @@ function assert_label_mouseover_attrs_off (behavior) {
 
 
 describe('Behavior', () => {
-  const map = { sel: d3Body }
+  const map = {
+    sel: d3Body,
+    settings: new Settings(() => { }, () => { }, []),
+  }
   let behavior
 
   beforeEach(() => { behavior = Behavior(map, null) })

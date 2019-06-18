@@ -1,0 +1,153 @@
+{
+  "reactions": [
+    {
+      "name": "rhea:16525",
+      "reaction_string": "2-dehydro-3-deoxy-D-galactonate + ATP <=> H(+) + ADP + 2-dehydro-3-deoxy-6-phospho-D-galactonate",
+      "id": "MNXR33792"
+    },
+    {
+      "name": "rhea:18649",
+      "reaction_string": "2-dehydro-3-deoxy-D-galactonate + H2O <=> D-galactonate",
+      "id": "MNXR2500"
+    }
+  ],
+  "model": {
+    "id": "test",
+    "version": 1,
+    "metabolites": [
+      {
+        "name": "H(+)",
+        "formula": "H",
+        "compartment": "",
+        "charge": 1,
+        "annotation": {
+          "source": "chebi:15378",
+          "InChI": "InChI=1S/p+1",
+          "mass": "1.0079"
+        },
+        "id": "MNXM1"
+      },
+      {
+        "name": "2-dehydro-3-deoxy-6-phospho-D-galactonate",
+        "formula": "C6H8O9P",
+        "compartment": "",
+        "charge": -3,
+        "annotation": {
+          "source": "chebi:58298",
+          "InChI": "InChI=1S/C6H11O9P/c7-3(1-4(8)6(10)11)5(9)2-15-16(12,13)14/h3,5,7,9H,1-2H2,(H,10,11)(H2,12,13,14)/p-3/t3-,5-/m1/s1",
+          "mass": 255.0961
+        },
+        "id": "MNXM90136"
+      },
+      {
+        "name": "2-dehydro-3-deoxy-D-galactonate",
+        "formula": "C6H9O6",
+        "compartment": "",
+        "charge": -1,
+        "annotation": {
+          "source": "chebi:57989",
+          "InChI": "InChI=1S/C6H10O6/c7-2-5(10)3(8)1-4(9)6(11)12/h3,5,7-8,10H,1-2H2,(H,11,12)/p-1/t3-,5-/m1/s1",
+          "mass": "177.1321"
+        },
+        "id": "MNXM1627"
+      },
+      {
+        "name": "ATP",
+        "formula": "C10H12N5O13P3",
+        "compartment": "",
+        "charge": -4,
+        "annotation": {
+          "source": "chebi:30616",
+          "InChI": "InChI=1S/C10H16N5O13P3/c11-8-5-9(13-2-12-8)15(3-14-5)10-7(17)6(16)4(26-10)1-25-30(21,22)28-31(23,24)27-29(18,19)20/h2-4,6-7,10,16-17H,1H2,(H,21,22)(H,23,24)(H2,11,12,13)(H2,18,19,20)/p-4/t4-,6-,7-,10-/m1/s1",
+          "mass": "503.1493"
+        },
+        "id": "MNXM3"
+      },
+      {
+        "name": "ADP",
+        "formula": "C10H12N5O10P2",
+        "compartment": "",
+        "charge": -3,
+        "annotation": {
+          "source": "chebi:456216",
+          "InChI": "InChI=1S/C10H15N5O10P2/c11-8-5-9(13-2-12-8)15(3-14-5)10-7(17)6(16)4(24-10)1-23-27(21,22)25-26(18,19)20/h2-4,6-7,10,16-17H,1H2,(H,21,22)(H2,11,12,13)(H2,18,19,20)/p-3/t4-,6-,7-,10-/m1/s1",
+          "mass": "424.1773"
+        },
+        "id": "MNXM7"
+      },
+      {
+        "name": "H2O",
+        "formula": "H2O",
+        "compartment": "",
+        "charge": 0,
+        "annotation": {
+          "source": "chebi:15377",
+          "InChI": "InChI=1S/H2O/h1H2",
+          "mass": "18.0153"
+        },
+        "id": "MNXM2"
+      },
+      {
+        "name": "D-galactonate",
+        "formula": "C6H11O7",
+        "compartment": "",
+        "charge": -1,
+        "annotation": {
+          "source": "chebi:12931",
+          "InChI": "InChI=1S/C6H12O7/c7-1-2(8)3(9)4(10)5(11)6(12)13/h2-5,7-11H,1H2,(H,12,13)/p-1/t2-,3+,4+,5-/m1/s1",
+          "mass": "195.1473"
+        },
+        "id": "MNXM1734"
+      }
+    ],
+    "genes": [],
+    "reactions": [
+      {
+        "name": "rhea:16525",
+        "id": "MNXR33792",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `2-dehydro-3-deoxy-D-galactonate` + 1 `ATP` = 1 `H(+)` + 1 `ADP` + 1 `2-dehydro-3-deoxy-6-phospho-D-galactonate`",
+          "EC": "2.7.1.178;2.7.1.58"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM90136": 1,
+          "MNXM7": 1,
+          "MNXM1": 1,
+          "MNXM3": -1,
+          "MNXM1627": -1
+        }
+      },
+      {
+        "name": "rhea:18649",
+        "id": "MNXR2500",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `2-dehydro-3-deoxy-D-galactonate` + 1 `H2O` = 1 `D-galactonate`",
+          "EC": "4.2.1.140;4.2.1.6"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM1734": 1,
+          "MNXM2": -1,
+          "MNXM1627": -1
+        }
+      }
+    ]
+  },
+  "primary_nodes": [
+    {
+      "name": "2-dehydro-3-deoxy-D-galactonate",
+      "id": "MNXM1627",
+      "formula": "C6H9O6"
+    },
+    {
+      "name": "D-galactonate",
+      "id": "MNXM1734",
+      "formula": "C6H11O7"
+    }
+  ]
+}

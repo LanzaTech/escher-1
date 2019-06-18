@@ -1,0 +1,448 @@
+{
+  "reactions": [
+    {
+      "name": "rhea:19481",
+      "reaction_string": "CoA + 3-oxoadipyl-CoA <=> acetyl-CoA + succinyl-CoA",
+      "id": "MNXR209"
+    },
+    {
+      "name": "rhea:12048",
+      "reaction_string": "3-oxoadipyl-CoA + succinate <=> 3-oxoadipate + succinyl-CoA",
+      "id": "MNXR184"
+    },
+    {
+      "name": "rhea:10184",
+      "reaction_string": "H(+) + 3-oxoadipate <=> H2O + 5-oxo-4,5-dihydro-2-furylacetate",
+      "id": "MNXR4008"
+    },
+    {
+      "name": "kegg:R03470",
+      "reaction_string": "CO2 + 5-oxo-4,5-dihydro-2-furylacetate <=> H(+) + 2-(carboxymethyl)-5-oxo-2,5-dihydro-2-furoate",
+      "id": "MNXR228"
+    },
+    {
+      "name": "rhea:23656",
+      "reaction_string": "2-(carboxymethyl)-5-oxo-2,5-dihydro-2-furoate <=> H(+) + 3-carboxy-cis,cis-muconate",
+      "id": "MNXR3655"
+    },
+    {
+      "name": "rhea:10084",
+      "reaction_string": "2.0 H(+) + 3-carboxy-cis,cis-muconate <=> 3,4-dihydroxybenzoate + O2",
+      "id": "MNXR4119"
+    },
+    {
+      "name": "rhea:36311",
+      "reaction_string": "2.0 H(+) + NADH + 3,4-dihydroxybenzoate <=> H2O + 3,4-dihydroxybenzaldehyde + NAD(+)",
+      "id": "MNXR5338"
+    },
+    {
+      "name": "rhea:36307",
+      "reaction_string": "acetyl-CoA + 3,4-dihydroxybenzaldehyde <=> H2O + caffeoyl-CoA",
+      "id": "MNXR1039"
+    }
+  ],
+  "model": {
+    "id": "test",
+    "version": 1,
+    "metabolites": [
+      {
+        "name": "3,4-dihydroxybenzoate",
+        "formula": "C7H5O4",
+        "compartment": "",
+        "charge": -1,
+        "annotation": {
+          "source": "chebi:36241",
+          "InChI": "InChI=1S/C7H6O4/c8-5-2-1-4(7(10)11)3-6(5)9/h1-3,8-9H,(H,10,11)/p-1",
+          "mass": "153.1122"
+        },
+        "id": "MNXM204"
+      },
+      {
+        "name": "NAD(+)",
+        "formula": "C21H26N7O14P2",
+        "compartment": "",
+        "charge": -1,
+        "annotation": {
+          "source": "chebi:57540",
+          "InChI": "InChI=1S/C21H27N7O14P2/c22-17-12-19(25-7-24-17)28(8-26-12)21-16(32)14(30)11(41-21)6-39-44(36,37)42-43(34,35)38-5-10-13(29)15(31)20(40-10)27-3-1-2-9(4-27)18(23)33/h1-4,7-8,10-11,13-16,20-21,29-32H,5-6H2,(H5-,22,23,24,25,33,34,35,36,37)/p-1/t10-,11-,13-,14-,15-,16-,20-,21-/m1/s1",
+          "mass": "662.4172"
+        },
+        "id": "MNXM8"
+      },
+      {
+        "name": "NADH",
+        "formula": "C21H27N7O14P2",
+        "compartment": "",
+        "charge": -2,
+        "annotation": {
+          "source": "chebi:57945",
+          "InChI": "InChI=1S/C21H29N7O14P2/c22-17-12-19(25-7-24-17)28(8-26-12)21-16(32)14(30)11(41-21)6-39-44(36,37)42-43(34,35)38-5-10-13(29)15(31)20(40-10)27-3-1-2-9(4-27)18(23)33/h1,3-4,7-8,10-11,13-16,20-21,29-32H,2,5-6H2,(H2,23,33)(H,34,35)(H,36,37)(H2,22,24,25)/p-2/t10-,11-,13-,14-,15-,16-,20-,21-/m1/s1",
+          "mass": "663.4251"
+        },
+        "id": "MNXM10"
+      },
+      {
+        "name": "H(+)",
+        "formula": "H",
+        "compartment": "",
+        "charge": 1,
+        "annotation": {
+          "source": "chebi:15378",
+          "InChI": "InChI=1S/p+1",
+          "mass": "1.0079"
+        },
+        "id": "MNXM1"
+      },
+      {
+        "name": "H2O",
+        "formula": "H2O",
+        "compartment": "",
+        "charge": 0,
+        "annotation": {
+          "source": "chebi:15377",
+          "InChI": "InChI=1S/H2O/h1H2",
+          "mass": "18.0153"
+        },
+        "id": "MNXM2"
+      },
+      {
+        "name": "3,4-dihydroxybenzaldehyde",
+        "formula": "C7H6O3",
+        "compartment": "",
+        "charge": 0,
+        "annotation": {
+          "source": "chebi:50205",
+          "InChI": "InChI=1S/C7H6O3/c8-4-5-1-2-6(9)7(10)3-5/h1-4,9-10H",
+          "mass": "138.1207"
+        },
+        "id": "MNXM2779"
+      },
+      {
+        "name": "5-oxo-4,5-dihydro-2-furylacetate",
+        "formula": "C6H5O4",
+        "compartment": "",
+        "charge": -1,
+        "annotation": {
+          "source": "chebi:58425",
+          "InChI": "InChI=1S/C6H6O4/c7-5(8)3-4-1-2-6(9)10-4/h1H,2-3H2,(H,7,8)/p-1",
+          "mass": "141.1015"
+        },
+        "id": "MNXM829"
+      },
+      {
+        "name": "3-oxoadipate",
+        "formula": "C6H6O5",
+        "compartment": "",
+        "charge": -2,
+        "annotation": {
+          "source": "chebi:15775",
+          "InChI": "InChI=1S/C6H8O5/c7-4(3-6(10)11)1-2-5(8)9/h1-3H2,(H,8,9)(H,10,11)/p-2",
+          "mass": "158.1088"
+        },
+        "id": "MNXM716"
+      },
+      {
+        "name": "2-(carboxymethyl)-5-oxo-2,5-dihydro-2-furoate",
+        "formula": "C7H4O6",
+        "compartment": "",
+        "charge": -2,
+        "annotation": {
+          "source": "chebi:57979",
+          "InChI": "InChI=1S/C7H6O6/c8-4(9)3-7(6(11)12)2-1-5(10)13-7/h1-2H,3H2,(H,8,9)(H,11,12)/p-2",
+          "mass": "184.1031"
+        },
+        "id": "MNXM1521"
+      },
+      {
+        "name": "3-carboxy-cis,cis-muconate",
+        "formula": "C7H3O6",
+        "compartment": "",
+        "charge": -3,
+        "annotation": {
+          "source": "chebi:57496",
+          "InChI": "InChI=1S/C7H6O6/c8-5(9)2-1-4(7(12)13)3-6(10)11/h1-3H,(H,8,9)(H,10,11)(H,12,13)/p-3/b2-1-,4-3+",
+          "mass": "183.0951"
+        },
+        "id": "MNXM1134"
+      },
+      {
+        "name": "succinyl-CoA",
+        "formula": "C25H35N7O19P3S",
+        "compartment": "",
+        "charge": -5,
+        "annotation": {
+          "source": "chebi:57292",
+          "InChI": "InChI=1S/C25H40N7O19P3S/c1-25(2,20(38)23(39)28-6-5-14(33)27-7-8-55-16(36)4-3-15(34)35)10-48-54(45,46)51-53(43,44)47-9-13-19(50-52(40,41)42)18(37)24(49-13)32-12-31-17-21(26)29-11-30-22(17)32/h11-13,18-20,24,37-38H,3-10H2,1-2H3,(H,27,33)(H,28,39)(H,34,35)(H,43,44)(H,45,46)(H2,26,29,30)(H2,40,41,42)/p-5/t13-,18-,19-,20+,24-/m1/s1",
+          "mass": "862.5672"
+        },
+        "id": "MNXM92"
+      },
+      {
+        "name": "succinate",
+        "formula": "C4H4O4",
+        "compartment": "",
+        "charge": -2,
+        "annotation": {
+          "source": "chebi:30031",
+          "InChI": "InChI=1S/C4H6O4/c5-3(6)1-2-4(7)8/h1-2H2,(H,5,6)(H,7,8)/p-2",
+          "mass": "116.0722"
+        },
+        "id": "MNXM25"
+      },
+      {
+        "name": "3-oxoadipyl-CoA",
+        "formula": "C27H37N7O20P3S",
+        "compartment": "",
+        "charge": -5,
+        "annotation": {
+          "source": "chebi:57348",
+          "InChI": "InChI=1S/C27H42N7O20P3S/c1-27(2,22(41)25(42)30-6-5-16(36)29-7-8-58-18(39)9-14(35)3-4-17(37)38)11-51-57(48,49)54-56(46,47)50-10-15-21(53-55(43,44)45)20(40)26(52-15)34-13-33-19-23(28)31-12-32-24(19)34/h12-13,15,20-22,26,40-41H,3-11H2,1-2H3,(H,29,36)(H,30,42)(H,37,38)(H,46,47)(H,48,49)(H2,28,31,32)(H2,43,44,45)/p-5/t15-,20-,21-,22+,26-/m1/s1",
+          "mass": "904.6039"
+        },
+        "id": "MNXM1264"
+      },
+      {
+        "name": "CoA",
+        "formula": "C21H32N7O16P3S",
+        "compartment": "",
+        "charge": -4,
+        "annotation": {
+          "source": "chebi:57287",
+          "InChI": "InChI=1S/C21H36N7O16P3S/c1-21(2,16(31)19(32)24-4-3-12(29)23-5-6-48)8-41-47(38,39)44-46(36,37)40-7-11-15(43-45(33,34)35)14(30)20(42-11)28-10-27-13-17(22)25-9-26-18(13)28/h9-11,14-16,20,30-31,48H,3-8H2,1-2H3,(H,23,29)(H,24,32)(H,36,37)(H,38,39)(H2,22,25,26)(H2,33,34,35)/p-4/t11-,14-,15-,16+,20-/m1/s1",
+          "mass": "763.5024"
+        },
+        "id": "MNXM12"
+      },
+      {
+        "name": "acetyl-CoA",
+        "formula": "C23H34N7O17P3S",
+        "compartment": "",
+        "charge": -4,
+        "annotation": {
+          "source": "chebi:57288",
+          "InChI": "InChI=1S/C23H38N7O17P3S/c1-12(31)51-7-6-25-14(32)4-5-26-21(35)18(34)23(2,3)9-44-50(41,42)47-49(39,40)43-8-13-17(46-48(36,37)38)16(33)22(45-13)30-11-29-15-19(24)27-10-28-20(15)30/h10-11,13,16-18,22,33-34H,4-9H2,1-3H3,(H,25,32)(H,26,35)(H,39,40)(H,41,42)(H2,24,27,28)(H2,36,37,38)/p-4/t13-,16-,17-,18+,22-/m1/s1",
+          "mass": "805.539"
+        },
+        "id": "MNXM21"
+      },
+      {
+        "name": "O2",
+        "formula": "O2",
+        "compartment": "",
+        "charge": 0,
+        "annotation": {
+          "source": "chebi:15379",
+          "InChI": "InChI=1S/O2/c1-2",
+          "mass": "31.9988"
+        },
+        "id": "MNXM4"
+      },
+      {
+        "name": "CO2",
+        "formula": "CO2",
+        "compartment": "",
+        "charge": 0,
+        "annotation": {
+          "source": "chebi:16526",
+          "InChI": "InChI=1S/CO2/c2-1-3",
+          "mass": "44.0095"
+        },
+        "id": "MNXM13"
+      },
+      {
+        "name": "caffeoyl-CoA",
+        "formula": "C30H38N7O19P3S",
+        "compartment": "",
+        "charge": -4,
+        "annotation": {
+          "source": "chebi:57372",
+          "InChI": "InChI=1S/C30H42N7O19P3S/c1-30(2,25(43)28(44)33-8-7-20(40)32-9-10-60-21(41)6-4-16-3-5-17(38)18(39)11-16)13-53-59(50,51)56-58(48,49)52-12-19-24(55-57(45,46)47)23(42)29(54-19)37-15-36-22-26(31)34-14-35-27(22)37/h3-6,11,14-15,19,23-25,29,38-39,42-43H,7-10,12-13H2,1-2H3,(H,32,40)(H,33,44)(H,48,49)(H,50,51)(H2,31,34,35)(H2,45,46,47)/p-4/b6-4+/t19-,23-,24-,25+,29-/m1/s1",
+          "mass": "925.6445"
+        },
+        "id": "MNXM443"
+      }
+    ],
+    "genes": [],
+    "reactions": [
+      {
+        "name": "rhea:36311",
+        "id": "MNXR5338",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "2 `H(+)` + 1 `NADH` + 1 `3,4-dihydroxybenzoate` = 1 `H2O` + 1 `3,4-dihydroxybenzaldehyde` + 1 `NAD(+)`",
+          "EC": ""
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM8": 1,
+          "MNXM2": 1,
+          "MNXM204": -1,
+          "MNXM1": -2,
+          "MNXM10": -1,
+          "MNXM2779": 1
+        }
+      },
+      {
+        "name": "rhea:10184",
+        "id": "MNXR4008",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `H(+)` + 1 `3-oxoadipate` = 1 `H2O` + 1 `5-oxo-4,5-dihydro-2-furylacetate`",
+          "EC": "3.1.1.24"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM1": -1,
+          "MNXM829": 1,
+          "MNXM2": 1,
+          "MNXM716": -1
+        }
+      },
+      {
+        "name": "rhea:23656",
+        "id": "MNXR3655",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `2-(carboxymethyl)-5-oxo-2,5-dihydro-2-furoate` = 1 `H(+)` + 1 `3-carboxy-cis,cis-muconate`",
+          "EC": "5.5.1.2"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM1134": 1,
+          "MNXM1": 1,
+          "MNXM1521": -1
+        }
+      },
+      {
+        "name": "rhea:12048",
+        "id": "MNXR184",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `3-oxoadipyl-CoA` + 1 `succinate` = 1 `3-oxoadipate` + 1 `succinyl-CoA`",
+          "EC": "2.8.3.6"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM1264": -1,
+          "MNXM25": -1,
+          "MNXM92": 1,
+          "MNXM716": 1
+        }
+      },
+      {
+        "name": "rhea:19481",
+        "id": "MNXR209",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `CoA` + 1 `3-oxoadipyl-CoA` = 1 `acetyl-CoA` + 1 `succinyl-CoA`",
+          "EC": "2.3.1.16;2.3.1.174"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM12": -1,
+          "MNXM1264": -1,
+          "MNXM92": 1,
+          "MNXM21": 1
+        }
+      },
+      {
+        "name": "rhea:10084",
+        "id": "MNXR4119",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "2 `H(+)` + 1 `3-carboxy-cis,cis-muconate` = 1 `3,4-dihydroxybenzoate` + 1 `O2`",
+          "EC": "1.13.11.3"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM204": 1,
+          "MNXM4": 1,
+          "MNXM1134": -1,
+          "MNXM1": -2
+        }
+      },
+      {
+        "name": "kegg:R03470",
+        "id": "MNXR228",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `CO2` + 1 `5-oxo-4,5-dihydro-2-furylacetate` = 1 `H(+)` + 1 `2-(carboxymethyl)-5-oxo-2,5-dihydro-2-furoate`",
+          "EC": "4.1.1.44"
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM1521": 1,
+          "MNXM829": -1,
+          "MNXM1": 1,
+          "MNXM13": -1
+        }
+      },
+      {
+        "name": "rhea:36307",
+        "id": "MNXR1039",
+        "lower_bound": -1000,
+        "upper_bound": 1000,
+        "annotation": {
+          "Description": "1 `acetyl-CoA` + 1 `3,4-dihydroxybenzaldehyde` = 1 `H2O` + 1 `caffeoyl-CoA`",
+          "EC": ""
+        },
+        "gene_reaction_rule": "",
+        "metabolites": {
+          "MNXM443": 1,
+          "MNXM2779": -1,
+          "MNXM2": 1,
+          "MNXM21": -1
+        }
+      }
+    ]
+  },
+  "primary_nodes": [
+    {
+      "name": "3-oxoadipyl-CoA",
+      "id": "MNXM1264",
+      "formula": "C27H37N7O20P3S"
+    },
+    {
+      "name": "3-oxoadipate",
+      "id": "MNXM716",
+      "formula": "C6H6O5"
+    },
+    {
+      "name": "5-oxo-4,5-dihydro-2-furylacetate",
+      "id": "MNXM829",
+      "formula": "C6H5O4"
+    },
+    {
+      "name": "2-(carboxymethyl)-5-oxo-2,5-dihydro-2-furoate",
+      "id": "MNXM1521",
+      "formula": "C7H4O6"
+    },
+    {
+      "name": "3-carboxy-cis,cis-muconate",
+      "id": "MNXM1134",
+      "formula": "C7H3O6"
+    },
+    {
+      "name": "3,4-dihydroxybenzoate",
+      "id": "MNXM204",
+      "formula": "C7H5O4"
+    },
+    {
+      "name": "3,4-dihydroxybenzaldehyde",
+      "id": "MNXM2779",
+      "formula": "C7H6O3"
+    },
+    {
+      "name": "caffeoyl-CoA",
+      "id": "MNXM443",
+      "formula": "C30H38N7O19P3S"
+    }
+  ]
+}
