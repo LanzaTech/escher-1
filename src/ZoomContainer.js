@@ -297,6 +297,7 @@ function _go_to_callback (scale, translate) {
     this.window_scale = scale
     this.callback_manager.run('zoomChange')
   }
+
   this.window_translate = translate
 
   var use_3d_transform = this._use_3d_transform

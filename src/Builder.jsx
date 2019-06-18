@@ -260,24 +260,25 @@ class Builder {
       if (this.map) this.map.set_status('')
     }.bind(this))
     this.zoom_container.callback_manager.set('zoomChange', function () {
-      if (this.options.semantic_zoom) {
-        const scale = this.zoom_container.window_scale
-        const optionObject = this.options.semantic_zoom
-        .sort((a, b) => a.zoomLevel - b.zoomLevel)
-        .find(a => a.zoomLevel > scale)
-        if (optionObject) {
-          Object.entries(optionObject.options).map(([option, value]) => {
-            if (this.options[option] !== value) {
-              this.settings.set_conditional(option, value)
-              this._update_data(false, true)
-              if (this.options.gene_knockout.length > 0) {
-                this.set_knockout_genes(this.options.gene_knockout)
+        if (this.options.semantic_zoom) {
+          const scale = this.zoom_container.window_scale
+          const optionObject = this.options.semantic_zoom
+          .sort((a, b) => a.zoomLevel - b.zoomLevel)
+          .find(a => a.zoomLevel > scale)
+          if (optionObject) {
+            Object.entries(optionObject.options).map(([option, value]) => {
+              if (this.options[option] !== value) {
+                this.settings.set_conditional(option, value)
+                this._update_data(false, true)
+                if (this.options.gene_knockout.length > 0) {
+                  this.set_knockout_genes(this.options.gene_knockout)
+                }
               }
-            }
-          })
+            })
+          }
         }
-      }
-    }.bind(this))
+      }.bind(this))
+      
 
     // Set up the tooltip container
     this.tooltip_container = new TooltipContainer(this.selection,

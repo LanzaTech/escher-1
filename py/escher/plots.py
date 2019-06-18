@@ -436,7 +436,7 @@ class Builder(object):
             try:
                 getattr(self, 'set_%s' % key)(val)
             except AttributeError:
-                print('Unrecognized keywork argument %s' % key)
+                print('Unrecognized keyword argument %s' % key)
 
 
     def _load_model(self):

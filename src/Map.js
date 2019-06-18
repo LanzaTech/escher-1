@@ -93,6 +93,7 @@ Map.prototype = {
   // build
   new_reaction_from_scratch: new_reaction_from_scratch,
   extend_nodes: extend_nodes,
+  draw_metabolite: draw_metabolite,
   extend_reactions: extend_reactions,
   new_reaction_for_metabolite: new_reaction_for_metabolite,
   cycle_primary_node: cycle_primary_node,
@@ -397,9 +398,9 @@ function from_data (map_data, svg, css, selection, zoom_container, settings,
 
       // propagate coefficients
       reaction.metabolites.forEach(function(met) {
-        if (met.bigg_id==from_node.bigg_id) {
+        if (met.bigg_id === from_node.bigg_id) {
           segment.from_node_coefficient = met.coefficient
-        } else if (met.bigg_id==to_node.bigg_id) {
+        } else if (met.bigg_id === to_node.bigg_id) {
           segment.to_node_coefficient = met.coefficient
         }
       })
@@ -1083,7 +1084,7 @@ function calc_data_stats (type) {
         vals.push(node.data)
       }
     }
-  } else if (type == 'reaction') {
+  } else if (type === 'reaction') {
     for (let reaction_id in this.reactions) {
       var reaction = this.reactions[reaction_id]
       // check number
@@ -1133,7 +1134,7 @@ function calc_data_stats (type) {
       var fn = ar[1]
       new_val = fn(vals)
     }
-    if (new_val != this.data_statistics[type][name]) {
+    if (new_val !== this.data_statistics[type][name]) {
       same = false
     }
     this.data_statistics[type][name] = new_val
@@ -1335,8 +1336,9 @@ function delete_selected () {
   var selected_nodes = this.get_selected_nodes(),
   selected_text_labels = this.get_selected_text_labels()
   if (Object.keys(selected_nodes).length >= 1 ||
-      Object.keys(selected_text_labels).length >= 1)
+      Object.keys(selected_text_labels).length >= 1) {
     this.delete_selectable(selected_nodes, selected_text_labels, true)
+  }
 }
 
 /**
@@ -1376,14 +1378,15 @@ function delete_selectable (selected_nodes, selected_text_labels, should_draw) {
 
     // redraw
     if (should_draw) {
-      if (changed_r_scale)
+      if (changed_r_scale) {
         this.draw_all_reactions(true, true)
-      else
+      } else {
         this.clear_deleted_reactions(); // also clears segments and beziers
-      if (changed_m_scale)
+      } if (changed_m_scale) {
         this.draw_all_nodes(true)
-      else
+      } else {
         this.clear_deleted_nodes()
+      }
       this.clear_deleted_text_labels()
     }
   }.bind(this)
@@ -1471,11 +1474,12 @@ function delete_selectable (selected_nodes, selected_text_labels, should_draw) {
  */
 function delete_node_data (node_ids) {
   node_ids.forEach(function(node_id) {
-    if (this.enable_search && this.nodes[node_id].node_type=='metabolite') {
+    if (this.enable_search && this.nodes[node_id].node_type === 'metabolite') {
       var found = (this.search_index.remove('n' + node_id)
                    && this.search_index.remove('n_name' + node_id))
-      if (!found)
+      if (!found) {
         console.warn('Could not find deleted metabolite in search index')
+      }
     }
     const node = this.nodes[node_id]
     this.bigg_index.remove(node.bigg_id, node_id)
@@ -1503,7 +1507,7 @@ function delete_segment_data (segment_objs) {
       if (!(node_id in this.nodes)) return
       var node = this.nodes[node_id]
       node.connected_segments = node.connected_segments.filter(function(so) {
-        return so.segment_id != segment_obj.segment_id
+        return so.segment_id !== segment_obj.segment_id
       })
     }.bind(this))
 
@@ -1546,9 +1550,9 @@ function delete_reaction_data (reaction_ids) {
     for (var g_id in reaction.genes) {
       var found = (this.search_index.remove('r' + reaction_id + '_g' + g_id)
                    && this.search_index.remove('r' + reaction_id + '_g_name' + g_id))
-      if (!found)
-        console.warn('Could not find deleted gene ' +
-                     g_id + ' in search index')
+      if (!found) {
+        console.warn(`Could not find deleted gene ${g_id} in search index`)
+      }
     }
   }.bind(this))
 }
@@ -1620,26 +1624,9 @@ function new_reaction_from_scratch (starting_reaction, coords, direction) {
   var metabolite_id = reactant_ids.length > 0
       ? reactant_ids[0]
       : Object.keys(cobra_reaction.metabolites)[0]
-  var metabolite = this.cobra_model.metabolites[metabolite_id]
-  var selected_node_id = String(++this.largest_ids.nodes)
-  var label_d = build.get_met_label_loc(Math.PI / 180 * direction, 0, 1, true,
-                                        metabolite_id)
-  var selected_node = {
-    connected_segments: [],
-    x: coords.x,
-    y: coords.y,
-    node_is_primary: true,
-    label_x: coords.x + label_d.x,
-    label_y: coords.y + label_d.y,
-    name: metabolite.name,
-    bigg_id: metabolite_id,
-    node_type: 'metabolite'
-  }
-  var new_nodes = {}
-  new_nodes[selected_node_id] = selected_node
 
-  // draw
-  _extend_and_draw_metabolite.apply(this, [ new_nodes, selected_node_id ])
+  const { node_id: selected_node_id, node } = this.draw_metabolite(metabolite_id, coords, direction)
+  let new_nodes = { [selected_node_id]: node }
 
   // clone the nodes and reactions, to redo this action later
   var saved_nodes = utils.clone(new_nodes)
@@ -1652,8 +1639,7 @@ function new_reaction_from_scratch (starting_reaction, coords, direction) {
   var reaction_undo = out.undo
 
   // add to undo/redo stack
-  this.undo_stack.push(function () {
-    // Undo. First undo the reaction.
+  var undo = () => {    // Undo. First undo the reaction.
     reaction_undo()
     // Get the nodes to delete
     this.delete_node_data(Object.keys(new_nodes))
@@ -1663,14 +1649,37 @@ function new_reaction_from_scratch (starting_reaction, coords, direction) {
     this.clear_deleted_nodes()
     // Deselect
     this.deselect_nodes()
-  }.bind(this), function () {
+  }
+
+  var redo = () => {
     // Redo. Clone the nodes and reactions, to redo this action later.
     _extend_and_draw_metabolite.apply(this, [ new_nodes, selected_node_id ])
     // Now redo the reaction
     reaction_redo()
-  }.bind(this))
+  }
+  this.undo_stack.push(undo, redo)
 
   return Object.assign({}, out, { undo, redo })
+}
+
+function draw_metabolite(metabolite_id, coords, direction) {
+  const metabolite = this.cobra_model.metabolites[metabolite_id]
+  const node_id = String(++this.largest_ids.nodes)
+  const label_d = build.get_met_label_loc(Math.PI / 180 * direction, 0, 1, true, metabolite_id)
+  const node = {
+    connected_segments: [],
+    x: coords.x,
+    y: coords.y,
+    node_is_primary: true,
+    label_x: coords.x + label_d.x,
+    label_y: coords.y + label_d.y,
+    name: metabolite.name,
+    bigg_id: metabolite_id,
+    node_type: 'metabolite'
+  }
+  // draw
+  _extend_and_draw_metabolite.call(this, { [node_id]: node }, node_id)
+  return { node_id, node }
 }
 
 /**
@@ -1680,7 +1689,7 @@ function extend_nodes (new_nodes) {
   if (this.enable_search) {
     for (var node_id in new_nodes) {
       var node = new_nodes[node_id]
-      if (node.node_type != 'metabolite')
+      if (node.node_type !== 'metabolite') {
         continue
       }
       this.search_index.insert('n' + node_id,
@@ -1787,14 +1796,14 @@ function _extend_and_draw_reaction (new_nodes, new_reactions, new_beziers,
   // select new primary metabolite
   for (var node_id in new_nodes) {
     var node = new_nodes[node_id]
-    if (node.node_is_primary && node_id!=selected_node_id) {
+    if (node.node_is_primary && node_id !== selected_node_id) {
       this.select_metabolite_with_id(node_id)
     }
   }
 }
 
 /**
- * Build a new reaction starting with selected_met. Undoable.
+ * Build a new reaction starting with selected_node_id. Undoable.
  * @param {String} reaction_bigg_id - The BiGG ID of the reaction to draw.
  * @param {String} selected_node_id - The ID of the node to begin drawing with.
  * @param {Number} direction - The direction to draw in.
@@ -1823,9 +1832,7 @@ function new_reaction_for_metabolite (reaction_bigg_id, selected_node_id,
                                this.largest_ids,
                                this.settings.get_option('cofactors'),
                                direction)
-  var new_nodes = out.new_nodes
-  var new_reactions = out.new_reactions
-  var new_beziers = out.new_beziers
+  let { new_nodes, new_reactions, new_beziers } = out
 
   // Draw
   _extend_and_draw_reaction.apply(this, [ new_nodes, new_reactions,
@@ -1848,8 +1855,9 @@ function new_reaction_for_metabolite (reaction_bigg_id, selected_node_id,
     new_reactions = utils.clone(saved_reactions)
     new_beziers = utils.clone(saved_beziers)
     // Draw
+    let scale_changed;
     if (this.has_data_on_reactions) {
-      var scale_changed = this.calc_data_stats('reaction')
+      scale_changed = this.calc_data_stats('reaction')
       if (scale_changed) {
         this.draw_all_reactions(true, true)
       } else {
@@ -1861,7 +1869,7 @@ function new_reaction_for_metabolite (reaction_bigg_id, selected_node_id,
       this.clear_deleted_reactions(true)
     }
     if (this.has_data_on_nodes) {
-      var scale_changed = this.calc_data_stats('metabolite')
+      scale_changed = this.calc_data_stats('metabolite')
       if (scale_changed) {
         this.draw_all_nodes(true)
       } else {
@@ -1891,9 +1899,7 @@ function cycle_primary_node () {
   if (_.isEmpty(selected_nodes)) { return }
   // Get the first node
   var node_id = Object.keys(selected_nodes)[0]
-  var node = selected_nodes[node_id]
   var reactions = this.reactions
-  var nodes = this.nodes
   // make the other reactants or products secondary
   // 1. Get the connected anchor nodes for the node
   var connected_anchor_ids = [],
@@ -1908,11 +1914,11 @@ function cycle_primary_node () {
       console.warn('Could not find connected segment ' + segment_info.segment_id)
       return
     }
-    connected_anchor_ids.push(segment.from_node_id==node_id ?
+    connected_anchor_ids.push(segment.from_node_id === node_id ?
                               segment.to_node_id : segment.from_node_id)
   })
   // can only be connected to one anchor
-  if (connected_anchor_ids.length != 1) {
+  if (connected_anchor_ids.length !== 1) {
     console.error('Only connected nodes with a single reaction can be selected')
     return
   }
@@ -1938,13 +1944,13 @@ function cycle_primary_node () {
   // 3. make sure they only have 1 reaction connection, and check if
   // they match the other selected nodes
   for (var i=0; i<related_node_ids.length; i++) {
-    if (nodes[related_node_ids[i]].connected_segments.length > 1) {
+    if (this.nodes[related_node_ids[i]].connected_segments.length > 1) {
       console.error('Only connected nodes with a single reaction can be selected')
       return
     }
   }
   for (var a_selected_node_id in selected_nodes) {
-    if (a_selected_node_id!=node_id && related_node_ids.indexOf(a_selected_node_id) == -1) {
+    if (a_selected_node_id !== node_id && related_node_ids.indexOf(a_selected_node_id) === -1) {
       console.warn('Selected nodes are not on the same reaction')
       return
     }
@@ -1956,8 +1962,9 @@ function cycle_primary_node () {
       last_is_primary = last_node.node_is_primary,
       last_coords = { x: last_node.x, y: last_node.y,
                       label_x: last_node.label_x, label_y: last_node.label_y }
-  if (last_node.connected_segments.length > 1)
+  if (last_node.connected_segments.length > 1) {
     console.warn('Too many connected segments for node ' + last_node.node_id)
+  }
   var last_segment_info = last_node.connected_segments[0], // guaranteed above to have only one
       last_segment
   try {
@@ -1995,7 +2002,7 @@ function cycle_primary_node () {
     if (last_i==i) return
     new_connected_segments.push(segment)
   })
-  nodes[connected_anchor_id].connected_segments = new_connected_segments
+  this.nodes[connected_anchor_id].connected_segments = new_connected_segments
   // 6. draw the nodes
   this.draw_these_nodes(nodes_to_draw)
   this.draw_these_reactions(reactions_to_draw)
@@ -2020,7 +2027,7 @@ function toggle_selected_node_primary() {
         return
       }
       var node = this.nodes[id]
-      if (node.node_type == 'metabolite') {
+      if (node.node_type === 'metabolite') {
         node.node_is_primary = !node.node_is_primary
         nodes_to_draw[id] = node
       }
@@ -2074,8 +2081,9 @@ function segments_and_reactions_for_nodes(nodes) {
       var segment_obj_w_segment = utils.clone(segment_obj)
       segment_obj_w_segment['segment'] = utils.clone(segment)
       segment_objs_w_segments[segment_obj.segment_id] = segment_obj_w_segment
-      if (!(segment_obj.reaction_id in segment_ids_for_reactions))
+      if (!(segment_obj.reaction_id in segment_ids_for_reactions)) {
         segment_ids_for_reactions[segment_obj.reaction_id] = []
+      }
       segment_ids_for_reactions[segment_obj.reaction_id].push(segment_obj.segment_id)
     })
   }
@@ -2085,7 +2093,7 @@ function segments_and_reactions_for_nodes(nodes) {
            these_ids = segment_ids_for_reactions[reaction_id],
            has = true
     for (var segment_id in reaction.segments) {
-      if (these_ids.indexOf(segment_id)==-1) has = false
+      if (these_ids.indexOf(segment_id) === -1) has = false
     }
     if (has) these_reactions[reaction_id] = reaction
   }
@@ -2248,46 +2256,39 @@ function get_size () {
 }
 
 function zoom_to_reaction(reaction_id) {
-  var reaction = this.reactions[reaction_id],
-      new_zoom = 0.5,
-      size = this.get_size(),
-      new_pos = { x: - reaction.label_x * new_zoom + size.width/2,
-                  y: - reaction.label_y * new_zoom + size.height/2 }
-  this.zoom_container.go_to(new_zoom, new_pos)
+  const reaction = this.reactions[reaction_id]
+  this.zoom_to_item(reaction.label_x, reaction.label_y)
 }
 
-function zoom_to_node (node_id) {
-  var node = this.nodes[node_id]
-  var new_zoom = 0.5
-  var size = this.get_size()
-  var new_pos = {
-    x: - node.label_x * new_zoom + size.width/2,
-    y: - node.label_y * new_zoom + size.height/2,
-  }
-  this.zoom_container.go_to(new_zoom, new_pos)
+function zoom_to_node(node_id) {
+  const node = this.nodes[node_id]
+  this.zoom_to_item(node.label_x, node.label_y)
 }
 
-function zoom_to_text_label (text_label_id) {
-  var text_label = this.text_labels[text_label_id]
-  var new_zoom = 0.5
-  var size = this.get_size()
-  var new_pos = {
-    x: - text_label.x * new_zoom + size.width/2,
-    y: - text_label.y * new_zoom + size.height/2,
-  }
-  this.zoom_container.go_to(new_zoom, new_pos)
+function zoom_to_text_label(text_label_id) {
+  const text_label = this.text_labels[text_label_id]
+  this.zoom_to_item(text_label.x, text_label.y)
 }
 
-function highlight_reaction (reaction_id) {
-  this.highlight(this.sel.selectAll('#r'+reaction_id).selectAll('text'))
+function zoom_to_item(x, y) {
+  const zoom = 0.5
+  const { width, height } = this.zoom_container.get_size()
+  this.zoom_container.go_to(zoom, {
+    x: -x * zoom + width / 2,
+    y: -y * zoom + height / 2
+  })
 }
 
-function highlight_node (node_id) {
-  this.highlight(this.sel.selectAll('#n'+node_id).selectAll('text'))
+function highlight_reaction(reaction_id) {
+  this.highlight(this.sel.selectAll(`#r${reaction_id}`).selectAll('text'))
 }
 
-function highlight_text_label (text_label_id) {
-  this.highlight(this.sel.selectAll('#l'+text_label_id).selectAll('text'))
+function highlight_node(node_id) {
+  this.highlight(this.sel.selectAll(`#n${node_id}`).selectAll('text'))
+}
+
+function highlight_text_label(text_label_id) {
+  this.highlight(this.sel.selectAll(`#l${text_label_id}`).selectAll('text'))
 }
 
 function highlight (sel) {
@@ -2528,8 +2529,9 @@ function convert_map () {
         found = true
       }
     }
-    if (!found)
+    if (!found) {
       reactions_not_found[reaction_id] = true
+    }
   }
   // convert metabolites
   for (var node_id in this.nodes) {
@@ -2540,15 +2542,16 @@ function convert_map () {
     // find in cobra model
     for (var model_metabolite_id in model.metabolites) {
       var model_metabolite = model.metabolites[model_metabolite_id]
-      if (model_metabolite.bigg_id == node.bigg_id) {
+      if (model_metabolite.bigg_id === node.bigg_id) {
         metabolite_attrs.forEach(function(attr) {
           node[attr] = model_metabolite[attr]
         })
         found = true
       }
     }
-    if (!found)
+    if (!found) {
       met_nodes_not_found[node_id] = true
+    }
   }
 
   // status
