@@ -24,7 +24,8 @@
     "jupyter/*",
     "src/*",
     "webpack.*",
-    "icons/*"
+    "icons/*",
+    ".babelrc"
   ],
   "main": "dist/escher.js",
   "engines": {
