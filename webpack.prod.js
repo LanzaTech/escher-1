@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const common = require('./webpack.common.js')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 // to visualize the webpack bundle contents:
 // yarn add -D webpack-bundle-analyzer
@@ -20,7 +21,7 @@ module.exports = merge.smart(common, {
     libraryTarget: 'umd'
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
+    new UglifyJsPlugin({
       include: /\.min\.js$/,
       sourceMap: true
     })
