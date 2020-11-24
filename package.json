@@ -23,7 +23,8 @@
     "dist/*",
     "jupyter/*",
     "src/*",
-    "webpack.*"
+    "webpack.*",
+    "icons/*"
   ],
   "main": "dist/escher.js",
   "engines": {
