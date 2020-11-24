@@ -25,7 +25,8 @@
     "src/*",
     "webpack.*",
     "icons/*",
-    ".babelrc"
+    ".babelrc",
+    "dist/*"
   ],
   "main": "dist/escher.js",
   "engines": {

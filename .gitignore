@@ -17,7 +17,6 @@ envset/
 .tmp/
 
 # built files
-dist/
 coverage/
 .nyc_output/
 
