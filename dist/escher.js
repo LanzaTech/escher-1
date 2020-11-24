@@ -21230,6 +21230,10 @@ var Builder = function () {
         }).find(function (a) {
           return a.zoomLevel > scale;
         });
+
+        console.log(_this.settings.get('semantic_zoom'));
+        console.log(scale);
+
         if (optionObject) {
           var didChange = false;
           _underscore2.default.mapObject(optionObject.options, function (value, key) {

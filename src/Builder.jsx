@@ -296,6 +296,10 @@ class Builder {
         const optionObject = this.settings.get('semantic_zoom')
                                  .sort((a, b) => a.zoomLevel - b.zoomLevel)
                                  .find(a => a.zoomLevel > scale)
+
+        console.log(this.settings.get('semantic_zoom'));
+        console.log(scale);
+
         if (optionObject) {
           let didChange = false
           _.mapObject(optionObject.options, (value, key) => {
