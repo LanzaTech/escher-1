@@ -241,8 +241,6 @@ export default class ZoomContainer {
       throw new Error('Bad translate value')
     }
 
-    console.log(scale);
-
     // Save to zoom behavior, which will call _goTo_callback
     const newZoom = d3ZoomIdentity
           .translate(translate.x, translate.y)

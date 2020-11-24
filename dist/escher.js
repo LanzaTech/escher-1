@@ -12488,8 +12488,6 @@ var ZoomContainer = function () {
       throw new Error('Bad translate value');
     }
 
-    console.log(scale);
-
     // Save to zoom behavior, which will call _goTo_callback
     var newZoom = _d3Zoom.zoomIdentity.translate(translate.x, translate.y).scale(scale);
     this.container.call(this._zoomBehavior.transform, newZoom);
@@ -21237,9 +21235,6 @@ var Builder = function () {
             optionObject = sortedZoomLevels[i];
           }
         }
-
-        console.log(optionObject);
-        console.log(scale);
 
         if (optionObject) {
           var didChange = false;

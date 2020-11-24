@@ -305,9 +305,6 @@ class Builder {
           }
         }
 
-        console.log(optionObject);
-        console.log(scale);
-
         if (optionObject) {
           let didChange = false
           _.mapObject(optionObject.options, (value, key) => {
