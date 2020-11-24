@@ -293,11 +293,19 @@ class Builder {
     this.zoomContainer.callbackManager.set('zoom_change', () => {
       if (this.settings.get('semantic_zoom')) {
         const scale = this.zoomContainer.windowScale
-        const optionObject = this.settings.get('semantic_zoom')
-                                 .sort((a, b) => a.zoomLevel - b.zoomLevel)
-                                 .find(a => a.zoomLevel > scale)
 
-        console.log(this.settings.get('semantic_zoom'));
+        const sortedZoomLevels = this.settings.get('semantic_zoom')
+                                .sort((a, b) => a.zoomLevel - b.zoomLevel);
+
+        let optionObject = void 0;
+
+        for (let i = 0; i < sortedZoomLevels.length; i++) {
+          if (scale >= sortedZoomLevels[i].zoomLevel) {
+            optionObject = sortedZoomLevels[i];
+          }
+        }
+
+        console.log(optionObject);
         console.log(scale);
 
         if (optionObject) {

@@ -21225,13 +21225,20 @@ var Builder = function () {
     this.zoomContainer.callbackManager.set('zoom_change', function () {
       if (_this.settings.get('semantic_zoom')) {
         var scale = _this.zoomContainer.windowScale;
-        var optionObject = _this.settings.get('semantic_zoom').sort(function (a, b) {
+
+        var sortedZoomLevels = _this.settings.get('semantic_zoom').sort(function (a, b) {
           return a.zoomLevel - b.zoomLevel;
-        }).find(function (a) {
-          return a.zoomLevel > scale;
         });
 
-        console.log(_this.settings.get('semantic_zoom'));
+        var optionObject = void 0;
+
+        for (var i = 0; i < sortedZoomLevels.length; i++) {
+          if (scale >= sortedZoomLevels[i].zoomLevel) {
+            optionObject = sortedZoomLevels[i];
+          }
+        }
+
+        console.log(optionObject);
         console.log(scale);
 
         if (optionObject) {
