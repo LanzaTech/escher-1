@@ -22,7 +22,8 @@
   "files": [
     "dist/*",
     "jupyter/*",
-    "src/*"
+    "src/*",
+    "webpack.*"
   ],
   "main": "dist/escher.js",
   "engines": {
