@@ -28263,7 +28263,7 @@ function update_segment(update_selection, scale, cobra_model, drawn_nodes, defs,
     return curve;
   }).attr('stroke-dasharray', function (d) {
     var f = d.data;
-    return f === null ? '23, 23' : null;
+    return null;
   }).style('stroke', function (d) {
     var reaction_id = this.parentNode.parentNode.__data__.bigg_id;
     var show_missing = highlight_missing && cobra_model !== null && !(reaction_id in cobra_model.reactions);

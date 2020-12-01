@@ -436,7 +436,7 @@ function update_segment (update_selection, scale, cobra_model,
     })
     .attr('stroke-dasharray', function (d) {
       var f = d.data
-      return f === null ? '23, 23' : null
+      return null;
     })
     .style('stroke', function(d) {
       var reaction_id = this.parentNode.parentNode.__data__.bigg_id
